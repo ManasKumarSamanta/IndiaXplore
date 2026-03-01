@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Tamil Nadu - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs (Teal & Amber for Tamil Nadu Theme) */
+        .blob { position: fixed; filter: blur(90px); z-index: -1; opacity: 0.3; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #0d9488; animation-delay: 0s; }
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #d97706; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 20%; width: 30vw; height: 30vw; background: #0891b2; animation-delay: -2s; opacity: 0.2; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Text Gradients */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #f59e0b, #14b8a6);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-500 selection:text-white">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-teal-500">Xplore</span></span>
+        </a>
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Explore States
+        </a>
+    </nav>
+
+    <main class="pt-24 pb-20 px-4 sm:px-6 max-w-7xl mx-auto min-h-screen flex flex-col gap-12">
+        
+        <!-- Hero Section -->
+        <div class="relative w-full h-[60vh] md:h-[70vh] rounded-[40px] overflow-hidden shadow-2xl group border border-white/10 mt-4">
+            <!-- Background Image -->
+            <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?fit=crop&w=1600&q=80" alt="Chennai Temple, Tamil Nadu" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" style="object-position: center;">
+            
+            <!-- Dark Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent"></div>
+            
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col items-center md:items-start text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-teal-300 font-semibold text-sm mb-6">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> South India
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 tracking-tight drop-shadow-xl font-serif-custom">Tamil Nadu</h1>
+                <h2 class="text-2xl md:text-4xl font-bold text-gradient mb-6 font-serif-custom">Land of Temples & Traditions</h2>
+                <p class="text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed drop-shadow-md">
+                    A mesmerizing blend of ancient Dravidian architecture, pristine coastlines, vibrant classical arts, and a deeply rooted cultural heritage.
+                </p>
+            </div>
+        </div>
+
+        <!-- Discover Cards Section -->
+        <div class="flex flex-col gap-8 mt-4">
+            
+            <!-- Card 1: Dravidian Masterpieces -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://www.poojn.in/wp-content/uploads/2025/03/Dravidian-Temple-Architecture-A-Detailed-Guide.jpeg.jpg" alt="Dravidian Temple" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f172a]/80 md:hidden"></div>
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">Dravidian Masterpieces</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Tamil Nadu is the spiritual heart of South India, boasting some of the most spectacular temple architecture in the world. Marvel at the towering, colorful gopurams of the <strong class="text-amber-400">Meenakshi Amman Temple</strong> in Madurai, or the sheer grandeur of the Brihadeeswara Temple in Thanjavur, a UNESCO World Heritage site.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">UNESCO Heritage</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Ancient Temples</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Architecture</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Culinary Symphony (Reverse Layout on Desktop) -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row-reverse group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://www.mistay.in/travel-blog/content/images/2020/06/Tamil-cuisine-cover.jpg" alt="South Indian Food" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">A Symphony of Flavors</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        The culinary landscape of Tamil Nadu is a true delight. Start your morning with steaming idlis, crispy <strong class="text-teal-400">dosas</strong>, and aromatic sambar, followed closely by a frothy cup of traditional South Indian Filter Coffee.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        For those seeking bold flavors, the fiery and aromatic <strong class="text-teal-400">Chettinad cuisine</strong> offers an unforgettable experience of freshly ground spices and rich gravies.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Chettinad Cuisine</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Filter Coffee</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Vegetarian Delights</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Arts & Coastlines -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://th.bing.com/th/id/R.bd735519b525bd5b36c97fd7d3c53201?rik=Jlp8u%2ffe6cdU6Q&riu=http%3a%2f%2fwww.lifeberrys.com%2fimg%2farticle%2fkovalam-1603018379-lb.jpg&ehk=WDQPGnYG8BErldz8ZkQv9vYZDb0yoxDBRvDHonH8wYA%3d&risl=&pid=ImgRaw&r=0" alt="Marina Beach" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="object-position: center;">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">Classical Arts & Coastlines</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        Tamil Nadu is a bastion of classical Indian arts. It is the birthplace of the graceful <strong class="text-cyan-400">Bharatanatyam</strong> dance and soulful Carnatic music, deeply woven into the fabric of daily life.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Beyond the arts, the state features stunning coastlines. Take an evening stroll along Chennai's massive Marina Beach, or watch the ocean converge at Kanyakumari, the southernmost tip of India.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Marina Beach</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Classical Dance</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Kanyakumari</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Must Visit Grid -->
+        <div class="mt-12">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center font-serif-custom">Must-Visit Destinations</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Chennai -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://www.fodors.com/wp-content/uploads/2019/12/04_ChennaiArchitecture__GroupofMonuments_shutterstock_700441387.jpg" alt="Chennai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Chennai</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">The bustling capital, home to Marina Beach and deep-rooted cultural heritage.</p>
+                </div>
+
+                <!-- Madurai -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://th.bing.com/th/id/R.25871341e7c5a494163d631fcdc29869?rik=i6Bj5VWlpBEkJw&riu=http%3a%2f%2fwww.emperortraveline.com%2fwp-content%2fuploads%2f2017%2f11%2fmadurai-meenakshi-temple.jpg&ehk=aDBA2ENMkmm36ENO%2fUN%2f6U%2fuBETFWEysbOnG7gjrN6A%3d&risl=&pid=ImgRaw&r=0" alt="Madurai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Madurai</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">The Athens of the East, famous globally for the Meenakshi Amman Temple.</p>
+                </div>
+
+                <!-- Ooty -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://static.toiimg.com/photo/msid-65754989,width-96,height-65.cms" alt="Ooty" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Ooty</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">A picturesque hill station known for its tea gardens and heritage mountain railway.</p>
+                </div>
+
+                <!-- Mahabalipuram -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://www.tripsavvy.com/thmb/xr_UdfffyqgA0xH4NWaCfsHWUgk=/1989x1326/filters:fill(auto,1)/GettyImages-579760012-b78004a355354623924eda63842ac3a9.jpg" alt="Mahabalipuram" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Mahabalipuram</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">An ancient coastal town renowned for its intricate rock-cut monuments and shore temples.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action Banner -->
+        <div class="glass-panel rounded-[32px] p-8 md:p-12 border border-teal-500/30 text-center relative overflow-hidden mt-8 mb-8 bg-gradient-to-br from-slate-900 to-teal-950/40">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay"></div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10 font-serif-custom">Ready to explore Tamil Nadu?</h2>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto relative z-10">Use our AI tools to instantly generate a custom itinerary, book flights, or reserve a luxury stay near the coastal temples.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                <a href="tourism.html" class="px-8 py-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> Plan AI Itinerary
+                </a>
+                <a href="hotels.html" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
+                    <i data-lucide="building" class="w-5 h-5"></i> Book Hotels
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-16 pb-10 px-6 relative z-10 bg-[#0f172a]/80 backdrop-blur-lg mt-10">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" class="inline-flex items-center gap-2 mb-4">
+                <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-teal-500">Xplore</span></span>
+            </a>
+            <div class="text-slate-500 text-sm font-medium">
+                All rights reserved &copy; IndiaXplore.co
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

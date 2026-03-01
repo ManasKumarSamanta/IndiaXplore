@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Andaman & Nicobar - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs (Teal & Sky Blue for Island Theme) */
+        .blob { position: fixed; filter: blur(90px); z-index: -1; opacity: 0.3; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #0d9488; animation-delay: 0s; } /* Teal */
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #0284c7; animation-delay: -5s; } /* Sky Blue */
+        .blob-3 { top: 40%; left: 20%; width: 30vw; height: 30vw; background: #0891b2; animation-delay: -2s; opacity: 0.2; } /* Cyan */
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Text Gradients */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #2dd4bf, #38bdf8);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-500 selection:text-slate-900">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-teal-500">Xplore</span></span>
+        </a>
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Explore States
+        </a>
+    </nav>
+
+    <main class="pt-24 pb-20 px-4 sm:px-6 max-w-7xl mx-auto min-h-screen flex flex-col gap-12">
+        
+        <!-- Hero Section -->
+        <div class="relative w-full h-[60vh] md:h-[70vh] rounded-[40px] overflow-hidden shadow-2xl group border border-white/10 mt-4">
+            <!-- Background Image -->
+            <img src="https://wallpaperaccess.com/full/1375761.jpg" alt="Andaman Pristine Beach" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" style="object-position: center;">
+            
+            <!-- Dark Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent"></div>
+            
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col items-center md:items-start text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-teal-300 font-semibold text-sm mb-6">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> Bay of Bengal
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 tracking-tight drop-shadow-xl font-serif-custom">Andaman & Nicobar</h1>
+                <h2 class="text-2xl md:text-4xl font-bold text-gradient mb-6 font-serif-custom">The Emerald Isles</h2>
+                <p class="text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed drop-shadow-md">
+                    An archipelago of untouched beauty featuring white-sand beaches, vibrant coral reefs, lush rainforests, and a deep, stirring history.
+                </p>
+            </div>
+        </div>
+
+        <!-- Discover Cards Section -->
+        <div class="flex flex-col gap-8 mt-4">
+            
+            <!-- Card 1: Pristine Beaches -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://indiano.travel/wp-content/uploads/2023/01/Radhanagar-Beach-Feature-photo.jpg" alt="Radhanagar Beach" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f172a]/80 md:hidden"></div>
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">World-Class Shores</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Walk along the powdery white sands of <strong class="text-cyan-400">Radhanagar Beach</strong> on Havelock Island (Swaraj Dweep), consistently ranked among the best beaches in Asia. The turquoise waters, lined with ancient Mahua trees, create a picture-perfect paradise for sunbathing, swimming, and mesmerizing sunsets.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Radhanagar Beach</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Havelock Island</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Tropical Escapes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Marine Life (Reverse Layout on Desktop) -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row-reverse group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?fit=crop&w=800&q=80" alt="Scuba Diving Coral Reef" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">Beneath the Surface</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        The Andaman Sea hides a bustling underwater metropolis. It is India's premier destination for <strong class="text-teal-400">scuba diving and snorkeling</strong>.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Dive into the warm waters around Neil Island (Shaheed Dweep) and Elephant Beach to swim alongside majestic manta rays, sea turtles, dugongs, and incredibly vibrant, untouched coral reef ecosystems.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Scuba Diving</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Coral Reefs</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Sea Turtles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: History & Wilderness -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://as1.ftcdn.net/v2/jpg/02/08/17/28/1000_F_208172832_Cs9BvjsYWmyLknyXfnjGzv4dNvQNAvLC.jpg" alt="Cellular Jail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="object-position: center;">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-sky-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">Echoes of the Past</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        Before it was a tropical haven, Port Blair was known for the infamous <strong class="text-sky-400">Cellular Jail (Kala Pani)</strong>. Today, it stands as a solemn national memorial dedicated to India's freedom fighters, complete with a stirring light and sound show.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Beyond history, explore the raw wilderness of Baratang Island, journeying through dense mangrove creeks to witness ancient limestone caves and mud volcanoes.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Cellular Jail</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Port Blair</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Mangrove Creeks</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Must Visit Grid -->
+        <div class="mt-12">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center font-serif-custom">Must-Visit Destinations</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Port Blair -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://www.godigit.com/content/dam/godigit/directportal/en/contenthm/andaman.jpg" alt="Port Blair" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Port Blair</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">The capital city, home to the historic Cellular Jail and the gateway to the islands.</p>
+                </div>
+
+                <!-- Havelock -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://res.cloudinary.com/purnesh/image/upload/w_1080,f_auto/havelock-header.jpg" alt="Havelock Island" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Havelock Island</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">Famed for the stunning Radhanagar Beach and world-class scuba diving spots.</p>
+                </div>
+
+                <!-- Neil Island -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://www.andamanisland.in/uploads/andamanislands/attachchments/main/602e33fee563b117_neil-island-3.png" alt="Neil Island" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Neil Island</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">A tranquil, eco-friendly retreat known for its natural rock bridges and snorkeling.</p>
+                </div>
+
+                <!-- Baratang -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://www.andamantourism.org/wp-content/uploads/2023/12/baratang-island.jpg" alt="Baratang Island" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Baratang Island</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">An adventurous escape into dense mangrove forests, limestone caves, and mud volcanoes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action Banner -->
+        <div class="glass-panel rounded-[32px] p-8 md:p-12 border border-teal-500/30 text-center relative overflow-hidden mt-8 mb-8 bg-gradient-to-br from-slate-900 to-teal-950/40">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay"></div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10 font-serif-custom">Ready to explore the Andamans?</h2>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto relative z-10">Use our AI tools to instantly generate a custom island-hopping itinerary, book flights to Port Blair, or reserve a beachfront resort.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                <a href="tourism.html" class="px-8 py-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(13,148,136,0.4)] flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> Plan AI Itinerary
+                </a>
+                <a href="hotels.html" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
+                    <i data-lucide="building" class="w-5 h-5"></i> Book Island Stays
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-16 pb-10 px-6 relative z-10 bg-[#0f172a]/80 backdrop-blur-lg mt-10">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" class="inline-flex items-center gap-2 mb-4">
+                <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-teal-500">Xplore</span></span>
+            </a>
+            <div class="text-slate-500 text-sm font-medium">
+                All rights reserved &copy; IndiaXplore.co
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

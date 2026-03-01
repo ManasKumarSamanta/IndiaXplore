@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Telangana - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs (Fuchsia & Cyan for Telangana Theme) */
+        .blob { position: fixed; filter: blur(90px); z-index: -1; opacity: 0.3; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #d946ef; animation-delay: 0s; } /* Fuchsia */
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #06b6d4; animation-delay: -5s; } /* Cyan */
+        .blob-3 { top: 40%; left: 20%; width: 30vw; height: 30vw; background: #c026d3; animation-delay: -2s; opacity: 0.2; } /* Deep Fuchsia */
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Text Gradients */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #22d3ee, #e879f9);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-fuchsia-500 selection:text-white">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-fuchsia-500">Xplore</span></span>
+        </a>
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Explore States
+        </a>
+    </nav>
+
+    <main class="pt-24 pb-20 px-4 sm:px-6 max-w-7xl mx-auto min-h-screen flex flex-col gap-12">
+        
+        <!-- Hero Section -->
+        <div class="relative w-full h-[60vh] md:h-[70vh] rounded-[40px] overflow-hidden shadow-2xl group border border-white/10 mt-4">
+            <!-- Background Image -->
+            <img src="https://wallpaperaccess.com/full/4495592.jpg" alt="Charminar, Hyderabad" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" style="object-position: center;">
+            
+            <!-- Dark Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent"></div>
+            
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col items-center md:items-start text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-fuchsia-300 font-semibold text-sm mb-6">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> South-Central India
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 tracking-tight drop-shadow-xl font-serif-custom">Telangana</h1>
+                <h2 class="text-2xl md:text-4xl font-bold text-gradient mb-6 font-serif-custom">Where History Meets the Future</h2>
+                <p class="text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed drop-shadow-md">
+                    A vibrant tapestry of grand Nizami heritage, tantalizing cuisine, shimmering lakes, and soaring technological skylines.
+                </p>
+            </div>
+        </div>
+
+        <!-- Discover Cards Section -->
+        <div class="flex flex-col gap-8 mt-4">
+            
+            <!-- Card 1: Nizami Heritage -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://subrata498460531.files.wordpress.com/2021/06/img_20210608_190656-edited.jpg" alt="Golconda Fort" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f172a]/80 md:hidden"></div>
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">The Royal Nizami Heritage</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        The heartbeat of Telangana is heavily influenced by the majestic legacy of the Qutb Shahi and Asaf Jahi dynasties. Explore the iconic <strong class="text-fuchsia-400">Charminar</strong>, marvel at the acoustic brilliance of the Golconda Fort, and walk through the opulent halls of the Chowmahalla Palace.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Charminar</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Golconda Fort</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Palaces</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: A Culinary Paradise (Reverse Layout on Desktop) -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row-reverse group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://www.apnachef.com/wp-content/uploads/2023/12/chicken-biryani-50-people-wide.jpg" alt="Hyderabadi Biryani" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">A Culinary Paradise</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        Telangana's cuisine is globally celebrated, dominated by the legendary <strong class="text-orange-400">Hyderabadi Biryani</strong>—a fragrant masterpiece of basmati rice, tender meat, and aromatic spices cooked on 'dum' (slow heat).
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Beyond biryani, you must indulge in Haleem during the holy month of Ramadan, taste spicy local curries, and end your evenings with a warm cup of Irani Chai paired with Osmania biscuits from legendary local bakeries.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Hyderabadi Biryani</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Irani Chai</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Street Food</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Tech Meets Tradition -->
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/10 flex flex-col md:flex-row group">
+                <div class="w-full md:w-5/12 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://preview.redd.it/cyberabad-part-of-hyderabad-south-india-v0-4uhljd17g9xc1.jpeg?auto=webp&s=8c28cdf885defa23c5363c860b2812fb4e6aad05" alt="Cyberabad Skyline" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="object-position: center;">
+                </div>
+                <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center relative bg-slate-900/40">
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <h3 class="text-3xl font-bold text-white mb-4 font-serif-custom">Tech Meets Tradition</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-4">
+                        While deeply rooted in history, Telangana is soaring into the future. The area known as <strong class="text-cyan-400">Cyberabad</strong> (HITEC City) boasts towering skyscrapers, sprawling IT parks, and global tech headquarters.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed text-lg mb-6">
+                        Bridging the old and the new is the stunning Hussain Sagar Lake, marked by the monolithic Buddha statue at its center. Telangana is also home to the magical Ramoji Film City, the largest integrated film studio complex in the world.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Cyberabad</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Ramoji Film City</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-400">Hussain Sagar</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Must Visit Grid -->
+        <div class="mt-12">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center font-serif-custom">Must-Visit Destinations</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Hyderabad -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://d27k8xmh3cuzik.cloudfront.net/wp-content/uploads/2016/08/charminar-hyderabad.jpg" alt="Hyderabad" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Hyderabad</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">The 'City of Pearls', beautifully balancing ancient Islamic architecture with mega IT hubs.</p>
+                </div>
+
+                <!-- Warangal -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://th.bing.com/th/id/R.184488289abc048b014dae5300e86865?rik=bL5Cz5z03TjU9A&riu=http%3a%2f%2fwww.themysteriousindia.net%2fwp-content%2fuploads%2f2015%2f11%2fwarangal11.jpg&ehk=87Di4WNg%2f2d2w3dbdurfzMO2DaL0SWx05p67sto94tg%3d&risl=&pid=ImgRaw&r=0" alt="Warangal" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Warangal</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">The ancient capital of the Kakatiya dynasty, famous for the magnificent Thousand Pillar Temple.</p>
+                </div>
+
+                <!-- Ramoji Film City -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://buddymantra.com/wp-content/uploads/2018/01/ramoji-film-city.jpg" alt="Ramoji Film City" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Ramoji Film City</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">A magical cinematic theme park offering behind-the-scenes tours and grand sets.</p>
+                </div>
+
+                <!-- Nagarjunasagar -->
+                <div class="glass-panel p-4 rounded-3xl border border-white/10 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer bg-slate-800/50">
+                    <div class="w-full h-40 rounded-2xl overflow-hidden mb-4 relative">
+                        <img src="https://oneday.travel/wp-content/uploads/one-day-hyderabad-to-nagarjunasagar-sightseeing-tour-package-private-cab-header.jpg" alt="Nagarjunasagar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 text-center">Nagarjunasagar</h4>
+                    <p class="text-sm text-slate-400 text-center px-2 pb-2">Home to one of the world's largest masonry dams and the ancient Buddhist ruins of Nagarjunakonda.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action Banner -->
+        <div class="glass-panel rounded-[32px] p-8 md:p-12 border border-fuchsia-500/30 text-center relative overflow-hidden mt-8 mb-8 bg-gradient-to-br from-slate-900 to-fuchsia-950/40">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay"></div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10 font-serif-custom">Ready to explore Telangana?</h2>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto relative z-10">Use our AI tools to instantly generate a custom itinerary, book flights to Hyderabad, or find a luxury stay near the Charminar.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                <a href="tourism.html" class="px-8 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(217,70,239,0.4)] flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> Plan AI Itinerary
+                </a>
+                <a href="hotels.html" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
+                    <i data-lucide="building" class="w-5 h-5"></i> Book Hotels
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-16 pb-10 px-6 relative z-10 bg-[#0f172a]/80 backdrop-blur-lg mt-10">
+        <div class="max-w-7xl mx-auto text-center">
+            <a href="index.html" class="inline-flex items-center gap-2 mb-4">
+                <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-fuchsia-500">Xplore</span></span>
+            </a>
+            <div class="text-slate-500 text-sm font-medium">
+                All rights reserved &copy; IndiaXplore.co
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

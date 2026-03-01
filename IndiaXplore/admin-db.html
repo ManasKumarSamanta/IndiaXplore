@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Console - IndiaXplore Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617; /* Deep terminal black */
+            color: #f8fafc;
+        }
+        .font-mono-custom {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        
+        .pulse-dot {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* --- Custom Neumorphic Login Styles --- */
+        .login-container {
+            width: 340px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            color: white;
+            background: #020617;
+            /* Perfectly blended deep shadows */
+            box-shadow: 6px 6px 14px #01030b, -6px -6px 14px #030923;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 25px;
+            padding: 2.5em 3em;
+        }
+        .title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+        }
+        .form_control {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .form_control .label {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transition: all ease 0.2s;
+            transform: translate(0%, -50%);
+            font-size: 0.85em;
+            user-select: none;
+            pointer-events: none;
+            color: #64748b;
+        }
+        .form_control .input {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            padding: 0.8rem 0.8rem 0.8rem 12px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: box-shadow ease 0.2s;
+            /* Inset shadows for the input fields */
+            box-shadow: inset 3px 3px 5px #01030b, inset -3px -3px 5px #030923;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .form_control .input:focus,
+        .form_control .input:valid {
+            box-shadow: inset 4px 4px 6px #01030b, inset -4px -4px 6px #030923;
+        }
+        .form_control .input:focus + .label,
+        .form_control .input:valid + .label {
+            transform: translate(-150%, -50%);
+            opacity: 0;
+        }
+        .login-btn {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #38bdf8;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 6px;
+            transition: all ease 0.1s;
+            /* Outset shadows for the button */
+            box-shadow: 4px 4px 8px #01030b, -4px -4px 8px #030923;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        .login-btn:active {
+            /* Button press effect */
+            box-shadow: inset 3px 3px 6px #01030b, inset -3px -3px 6px #030923;
+            color: #0284c7;
+        }
+    </style>
+</head>
+<body class="antialiased h-screen overflow-hidden bg-[#020617]">
+
+    <!-- --- SECURE LOGIN GATEWAY --- -->
+    <div id="login-view" class="w-full h-full flex items-center justify-center relative z-50">
+        <!-- Ambient Glowing Backgrounds -->
+        <div class="absolute top-1/4 right-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="login-container">
+            <form class="form" onsubmit="handleLogin(event)">
+                <div class="flex justify-center mb-[-10px]">
+                    <div class="w-14 h-14 bg-slate-900 rounded-full flex items-center justify-center shadow-[inset_2px_2px_5px_#01030b,inset_-2px_-2px_5px_#030923]">
+                        <i data-lucide="shield-check" class="w-7 h-7 text-blue-500"></i>
+                    </div>
+                </div>
+                <span class="title">System Login</span>
+                
+                <div id="login-error" class="hidden text-xs text-rose-500 text-center bg-rose-500/10 py-2 rounded border border-rose-500/20 font-sans tracking-wide">
+                    Authentication Failed.
+                </div>
+
+                <div class="form_control">
+                    <input type="email" id="admin-email" class="input" required="">
+                    <label class="label">Email Address</label>
+                </div>
+                <div class="form_control">
+                    <input type="password" id="admin-password" class="input" required="">
+                    <label class="label">Access Key</label>
+                </div>
+                <button type="submit" class="login-btn">Authenticate</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- --- MAIN DASHBOARD VIEW (Hidden until authenticated) --- -->
+    <div id="dashboard-view" class="hidden w-full h-full">
+        <div class="flex w-full h-full">
+            
+            <!-- Sidebar -->
+            <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
+                <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+                        <i data-lucide="database" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-white text-sm">IX DB Console</h1>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest">Production Area</p>
+                    </div>
+                </div>
+                <nav class="flex-1 p-4 space-y-2">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 bg-blue-500/10 text-blue-400 rounded-lg text-sm font-medium border border-blue-500/20">
+                        <i data-lucide="users" class="w-4 h-4"></i> User Identities
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg text-sm font-medium transition-colors">
+                        <i data-lucide="activity" class="w-4 h-4"></i> API Logs
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg text-sm font-medium transition-colors">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i> Security Audit
+                    </a>
+                </nav>
+                <div class="p-4 border-t border-slate-800 flex flex-col gap-2">
+                    <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></div>
+                        <span class="text-xs text-emerald-400 font-mono-custom">DB Status: Online</span>
+                    </div>
+                    <button onclick="logout()" class="w-full text-xs text-slate-400 hover:text-white border border-slate-700 bg-slate-800 py-2 rounded transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="log-out" class="w-3 h-3"></i> Secure Logout
+                    </button>
+                    <button onclick="clearDatabase()" class="w-full text-[10px] text-rose-500 hover:text-rose-400 underline mt-2 text-center transition-colors">Wipe Database</button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 flex flex-col min-w-0 bg-[#020617]">
+                <!-- Top Header -->
+                <header class="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/50">
+                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <i data-lucide="table" class="w-5 h-5 text-slate-400"></i> Collection: <span class="text-blue-400 font-mono-custom text-sm border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 rounded">users_secure_vault</span>
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs text-slate-500 font-mono-custom"><i data-lucide="lock" class="w-3 h-3 inline mr-1 -mt-0.5"></i> AES-256 Encrypted</span>
+                        <button onclick="loadDatabase()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded text-sm transition-colors flex items-center gap-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Table Area -->
+                <div class="flex-1 p-6 overflow-auto">
+                    
+                    <div class="bg-slate-800/40 border border-slate-700 rounded-xl mb-6 p-4 flex items-start gap-4">
+                        <div class="bg-amber-500/20 p-2 rounded text-amber-500 shrink-0">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-amber-400 mb-1">Zero-Knowledge Storage Active</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed max-w-4xl">
+                                To comply with Indian data privacy laws (DPDP Act), Government ID numbers (Aadhar/Passport) are never stored in plain text. We utilize a one-way cryptographic hash (SHA-256). Only masked versions (**** 1234) are stored for UI rendering and QR code generation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-950 border-b border-slate-800 text-xs uppercase tracking-widest text-slate-500">
+                                        <th class="p-4 font-semibold">User / Auth0 ID</th>
+                                        <th class="p-4 font-semibold">Identity Type</th>
+                                        <th class="p-4 font-semibold">Cryptographic Hash (Stored in DB)</th>
+                                        <th class="p-4 font-semibold">Masked ID (For UI)</th>
+                                        <th class="p-4 font-semibold text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="db-table-body" class="text-sm font-mono-custom text-slate-300 divide-y divide-slate-800/50">
+                                    <!-- Dynamic Data Injected Here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center font-sans flex justify-between items-center">
+                            <span>Showing <span id="record-count">0</span> secure records.</span>
+                            <span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Database compliant with DPDP Act 2023</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- AUTHENTICATION LOGIC ---
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent page reload
+            
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-password').value;
+            const errorMsg = document.getElementById('login-error');
+
+            if (email === "admin@gmail.com" && pass === "admin123") {
+                // Success
+                errorMsg.classList.add('hidden');
+                
+                // Switch Views
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('dashboard-view').classList.remove('hidden');
+                
+                // Initial Data Load
+                loadDatabase();
+            } else {
+                // Error
+                errorMsg.classList.remove('hidden');
+                // Optional: clear password field
+                document.getElementById('admin-password').value = '';
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        // --- DATABASE LOGIC ---
+        function loadDatabase() {
+            // Fetch data stored by travel-pass.html
+            const records = JSON.parse(localStorage.getItem('ix_secure_vault')) || [];
+            const tbody = document.getElementById('db-table-body');
+            const countDisplay = document.getElementById('record-count');
+
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-slate-500 font-sans">No records found. Go to the Digital Travel Pass page and verify an ID to see it appear here automatically.</td></tr>`;
+                countDisplay.innerText = "0";
+                return;
+            }
+
+            countDisplay.innerText = records.length;
+            
+            // Reverse to show newest first
+            tbody.innerHTML = records.reverse().map(rec => {
+                const isIndian = rec.type === 'Indian Citizen';
+                const typeClasses = isIndian ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+                const maskColor = isIndian ? 'text-emerald-400' : 'text-blue-400';
+
+                return `
+                <tr class="hover:bg-slate-800/30 transition-colors">
+                    <td class="p-4">
+                        <div class="text-white font-sans text-sm mb-1">${rec.name}</div>
+                        <div class="text-[10px] text-slate-500">${rec.authId}</div>
+                    </td>
+                    <td class="p-4">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded border text-xs font-sans ${typeClasses}">
+                            ${rec.type}
+                        </span>
+                    </td>
+                    <td class="p-4">
+                        <div class="text-[11px] text-slate-500 truncate max-w-[250px] cursor-help" title="${rec.hash}">
+                            ${rec.hash.substring(0, 32)}...
+                        </div>
+                        <div class="text-[9px] text-blue-500 uppercase mt-1 tracking-wider">SHA-256 HASH • Logged at ${rec.time}</div>
+                    </td>
+                    <td class="p-4 ${maskColor} font-bold tracking-widest">${rec.masked}</td>
+                    <td class="p-4 text-center">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 mx-auto"></i>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function clearDatabase() {
+            if(confirm("CRITICAL WARNING: Are you sure you want to permanently wipe the secure vault?")) {
+                localStorage.removeItem('ix_secure_vault');
+                loadDatabase();
+            }
+        }
+    </script>
+</body>
+</html>

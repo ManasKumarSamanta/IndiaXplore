@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Trains - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs (Railway Orange/Yellow variants) */
+        .blob { position: fixed; filter: blur(80px); z-index: -1; opacity: 0.3; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #f97316; animation-delay: 0s; }
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #eab308; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-orange-accent { color: #f97316; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-bottom-color: #f97316;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Checkmark Animation for Success */
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+        }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        
+        /* Train Track Line */
+        .train-track {
+            background-image: repeating-linear-gradient(to right, #64748b 0, #64748b 4px, transparent 4px, transparent 8px);
+            height: 3px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-500 selection:text-white">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-orange-500">Xplore</span></span>
+        </a>
+        <a href="tourism.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+        </a>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <main class="pt-32 pb-24 px-6 max-w-5xl mx-auto min-h-screen flex flex-col gap-8 relative">
+        
+        <!-- STEP 1: Search Section -->
+        <div id="step-search" class="w-full transition-all duration-500">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-500/20 text-orange-400 mb-6 ring-1 ring-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
+                    <img src="train-railway-svgrepo-com.png" alt="Train" class="w-10 h-10 object-contain drop-shadow-[0_2px_10px_rgba(249,115,22,0.4)]">
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Book Trains</h1>
+                <p class="text-slate-300 max-w-2xl mx-auto">Discover seamless railway journeys. Find Express, Rajdhani, and Vande Bharat routes with instant seat availability estimates.</p>
+            </div>
+
+            <div class="glass-panel rounded-[32px] p-6 md:p-10 border-t border-orange-500/30 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row gap-4 items-end relative z-10">
+                    <!-- From -->
+                    <div class="w-full relative">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">From Station/City</label>
+                        <div class="absolute bottom-0 left-0 pl-4 pb-4 flex items-center pointer-events-none">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-slate-500"></i>
+                        </div>
+                        <input type="text" id="origin" placeholder="e.g. NDLS, Mumbai" 
+                            class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-orange-500 transition-colors placeholder-slate-500">
+                    </div>
+                    
+                    <!-- Swap Icon (Visual only) -->
+                    <div class="hidden md:flex shrink-0 pb-4 justify-center items-center w-10">
+                        <i data-lucide="arrow-right-left" class="w-5 h-5 text-slate-500"></i>
+                    </div>
+
+                    <!-- To -->
+                    <div class="w-full relative">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">To Station/City</label>
+                        <div class="absolute bottom-0 left-0 pl-4 pb-4 flex items-center pointer-events-none">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-slate-500"></i>
+                        </div>
+                        <input type="text" id="destination" placeholder="e.g. HWH, Chennai" 
+                            class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-orange-500 transition-colors placeholder-slate-500">
+                    </div>
+
+                    <!-- Date -->
+                    <div class="w-full md:w-64 relative shrink-0">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Journey Date</label>
+                        <input type="date" id="train-date" style="color-scheme: dark;"
+                            class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl px-4 py-4 focus:outline-none focus:border-orange-500 transition-colors">
+                    </div>
+                </div>
+
+                <button onclick="handleTrainSearch()" id="search-btn" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(234,88,12,0.4)] transition-all flex items-center justify-center gap-2 mt-8 relative z-10">
+                    <i data-lucide="search" class="w-5 h-5"></i> Search Trains
+                </button>
+
+                <!-- Error State -->
+                <div id="error-state" class="hidden bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex items-start gap-3 mt-4">
+                    <i data-lucide="alert-circle" class="w-5 h-5 shrink-0 mt-0.5"></i>
+                    <span id="error-message"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Loading State -->
+        <div id="step-loading" class="hidden flex-col items-center justify-center py-20 w-full transition-all duration-500">
+            <span class="loader w-12 h-12 mb-6"></span>
+            <h2 class="text-2xl font-bold text-white mb-2">Connecting to IRCTC Network...</h2>
+            <p class="text-orange-400 font-medium animate-pulse">Checking seat availability and schedules.</p>
+        </div>
+
+        <!-- STEP 3: Train Results -->
+        <div id="step-results" class="hidden w-full transition-all duration-500 flex-col gap-6">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2">
+                        <span id="res-origin"></span> 
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-orange-500"></i> 
+                        <span id="res-dest"></span>
+                    </h2>
+                    <p class="text-slate-400 text-sm" id="res-date"></p>
+                </div>
+                <button onclick="goBack('step-results', 'step-search')" class="text-slate-400 hover:text-white px-4 py-2 border border-slate-700 rounded-lg text-sm bg-slate-800/50">
+                    Modify Search
+                </button>
+            </div>
+            
+            <div id="train-list" class="space-y-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- STEP 4: Checkout / Payment -->
+        <div id="step-checkout" class="hidden w-full transition-all duration-500">
+            <div class="flex items-center justify-between mb-8 max-w-2xl mx-auto">
+                <div class="flex items-center gap-4">
+                    <button onclick="goBack('step-checkout', 'step-results')" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                    </button>
+                    <h2 class="text-3xl font-bold text-white">Review & Pay</h2>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden max-w-2xl mx-auto">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="bg-slate-900/60 rounded-2xl p-6 border border-slate-700/50 mb-6 relative z-10">
+                    <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700/50 pb-3">Journey Summary</h3>
+                    <div class="flex justify-between items-center text-sm mb-3">
+                        <span class="text-slate-400">Route</span>
+                        <span class="text-white font-bold text-base"><span id="chk-origin"></span> <i data-lucide="train" class="inline w-4 h-4 mx-1 text-orange-400"></i> <span id="chk-dest"></span></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm mb-3">
+                        <span class="text-slate-400">Train</span>
+                        <span class="text-white font-medium" id="chk-train"></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm mb-3">
+                        <span class="text-slate-400">Class</span>
+                        <span class="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded" id="chk-class"></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Date & Departure</span>
+                        <span class="text-white font-medium" id="chk-datetime"></span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 rounded-2xl p-6 border border-slate-700/50 mb-8 relative z-10">
+                    <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700/50 pb-3">Fare Breakdown</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">Ticket Fare (1 Adult)</span>
+                            <span class="text-white" id="chk-base-fare">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">IRCTC Convenience Fee</span>
+                            <span class="text-white" id="chk-taxes">₹35</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 mt-2 border-t border-slate-700/50 text-lg">
+                            <span class="text-white font-bold">Total Amount</span>
+                            <span class="text-orange-400 font-bold text-2xl" id="chk-total-fare">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="processPayment()" id="pay-btn" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold text-lg py-4 rounded-xl shadow-[0_0_25px_rgba(234,88,12,0.4)] transition-all flex items-center justify-center gap-2 relative z-10">
+                    <i data-lucide="lock" class="w-5 h-5"></i> Secure Pay <span id="btn-total-pay">₹0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 5: Processing Booking -->
+        <div id="step-processing" class="hidden flex-col items-center justify-center py-20 w-full transition-all duration-500">
+            <span class="loader w-12 h-12 mb-6 border-b-emerald-500"></span>
+            <h2 class="text-2xl font-bold text-white mb-2">Processing Payment...</h2>
+            <p class="text-emerald-400 font-medium animate-pulse">Generating your PNR and Seat number.</p>
+        </div>
+
+        <!-- STEP 6: Success Ticket -->
+        <div id="step-success" class="hidden w-full transition-all duration-500">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8 flex flex-col items-center">
+                    <div class="w-20 h-20 mb-4">
+                        <svg class="w-full h-full" viewBox="0 0 52 52">
+                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark-check" fill="none" stroke="#10b981" stroke-width="3" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white">Ticket Confirmed!</h2>
+                    <p class="text-slate-400">Your IRCTC e-ticket has been generated successfully.</p>
+                </div>
+
+                <!-- Railway Ticket UI -->
+                <div class="bg-[#fdfbf7] rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-300">
+                    <!-- Ticket Header -->
+                    <div class="bg-orange-600 p-4 flex justify-between items-center text-white border-b-4 border-orange-800">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="train" class="w-6 h-6"></i>
+                            <span class="font-bold tracking-wider uppercase text-sm">Indian Railways</span>
+                        </div>
+                        <div class="text-right flex items-center gap-2">
+                            <span class="block text-xs text-orange-200 uppercase">PNR No:</span>
+                            <span class="font-bold tracking-widest text-lg bg-orange-800 px-2 py-0.5 rounded" id="conf-pnr"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Ticket Body -->
+                    <div class="p-6 relative text-slate-800">
+                        <!-- Watermark -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                            <i data-lucide="train-track" class="w-64 h-64"></i>
+                        </div>
+
+                        <div class="flex justify-between items-start mb-6 border-b border-slate-300 pb-4">
+                            <div>
+                                <span class="block text-xs font-bold text-slate-500 uppercase">Train Name / No.</span>
+                                <span class="font-black text-xl text-slate-900" id="conf-train-no"></span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-xs font-bold text-slate-500 uppercase">Date of Journey</span>
+                                <span class="font-bold text-lg text-slate-900" id="conf-full-date"></span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <span class="block text-3xl font-black text-slate-900" id="conf-code-origin">NDLS</span>
+                                <span class="text-sm font-bold text-slate-600" id="conf-time-origin">10:00 AM</span>
+                            </div>
+                            
+                            <div class="flex-1 px-6 flex flex-col items-center">
+                                <span class="text-xs text-slate-500 font-bold mb-1" id="conf-duration">8h 30m</span>
+                                <div class="train-track"></div>
+                            </div>
+                            
+                            <div class="text-right">
+                                <span class="block text-3xl font-black text-slate-900" id="conf-code-dest">HWH</span>
+                                <span class="text-sm font-bold text-slate-600" id="conf-time-dest">18:30 PM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-4 border-t border-slate-300 pt-4">
+                            <div>
+                                <span class="block text-xs font-bold text-slate-500 uppercase">Class</span>
+                                <span class="font-bold text-lg text-slate-900" id="conf-class"></span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-slate-500 uppercase">Status</span>
+                                <span class="font-bold text-lg text-emerald-600">CNF</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-slate-500 uppercase">Coach/Seat</span>
+                                <span class="font-bold text-lg text-slate-900" id="conf-seat">B4 / 23</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ticket Footer -->
+                    <div class="bg-slate-200 p-4 px-6 flex justify-between items-center border-t border-slate-300">
+                        <div>
+                            <span class="block text-xs font-bold text-slate-500 uppercase">Total Fare</span>
+                            <span class="font-black text-slate-900 text-xl" id="conf-price">₹0</span>
+                        </div>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=IRCTC-Ticket" alt="QR Code" class="w-12 h-12 mix-blend-multiply border border-slate-400 p-0.5 rounded">
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button onclick="window.location.reload()" class="text-orange-400 hover:text-white transition-colors underline font-medium">Book another train</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Gemini API Config
+        const apiKey = "AIzaSyByJVibgF4dxPD-R26oVAL-cAyG_ULw1LY"; 
+
+        // Set default date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('train-date').value = tomorrow.toISOString().split('T')[0];
+
+        // View Router
+        function switchView(hideId, showId) {
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+            if(showId === 'step-loading' || showId === 'step-processing') {
+                document.getElementById(showId).classList.add('flex');
+            }
+        }
+
+        function goBack(currentId, targetId) {
+            document.getElementById(currentId).classList.add('hidden');
+            if(currentId.includes('loading') || currentId.includes('processing')) {
+                document.getElementById(currentId).classList.remove('flex');
+            }
+            document.getElementById(targetId).classList.remove('hidden');
+        }
+
+        async function handleTrainSearch() {
+            const origin = document.getElementById('origin').value.trim();
+            const dest = document.getElementById('destination').value.trim();
+            const date = document.getElementById('train-date').value;
+            const errorState = document.getElementById('error-state');
+            const errorMessage = document.getElementById('error-message');
+
+            if (!origin || !dest) {
+                errorState.classList.remove('hidden');
+                errorMessage.innerText = "Please enter both Origin and Destination stations/cities.";
+                return;
+            }
+
+            errorState.classList.add('hidden');
+            
+            // Set header for results page
+            document.getElementById('res-origin').innerText = origin.toUpperCase();
+            document.getElementById('res-dest').innerText = dest.toUpperCase();
+            document.getElementById('res-date').innerText = new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            switchView('step-search', 'step-loading');
+            await fetchTrains(origin, dest, date);
+        }
+
+        async function fetchTrains(origin, dest, date) {
+            const prompt = `
+                Act as a live Indian Railways (IRCTC) booking aggregator.
+                The user is searching for trains from "${origin}" to "${dest}" on ${date}.
+                Generate 4 realistic train options. Mix train types (e.g., Vande Bharat Express, Rajdhani, Shatabdi, Superfast Express).
+                Calculate a realistic train journey duration between these two cities and set departure/arrival times.
+                Provide realistic prices in INR for a standard AC class (e.g., 3A or CC).
+
+                You MUST return ONLY a valid JSON object matching this exact structure, with no markdown formatting:
+                {
+                    "trains": [
+                        {
+                            "train_name": "Vande Bharat Express",
+                            "train_number": "22435",
+                            "departure_time": "06:00 AM",
+                            "arrival_time": "02:00 PM",
+                            "duration": "8h 00m",
+                            "class_type": "CC",
+                            "price": 1250
+                        }
+                    ]
+                }
+            `;
+
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+            try {
+                const data = await fetchWithRetry(payload);
+                renderTrains(data.trains);
+            } catch (error) {
+                console.error("AI Error:", error);
+                document.getElementById('step-loading').classList.add('hidden');
+                document.getElementById('step-loading').classList.remove('flex');
+                document.getElementById('step-search').classList.remove('hidden');
+                document.getElementById('error-state').classList.remove('hidden');
+                document.getElementById('error-message').innerText = "Unable to fetch trains. Please try different stations.";
+            }
+        }
+
+        function renderTrains(trains) {
+            const listHTML = trains.map((t) => {
+                // Determine icon color based on train type
+                let typeColor = "text-orange-400";
+                if(t.train_name.toLowerCase().includes('vande')) typeColor = "text-blue-400"; // Vande Bharat is often blue/white
+                if(t.train_name.toLowerCase().includes('rajdhani')) typeColor = "text-rose-500"; // Rajdhani is red
+
+                const trainDataStr = encodeURIComponent(JSON.stringify(t));
+
+                return `
+                <div class="glass-panel p-6 md:p-8 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all flex flex-col md:flex-row items-center gap-6 group">
+                    <!-- Train Info -->
+                    <div class="flex items-center gap-4 w-full md:w-1/4">
+                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center ${typeColor}">
+                            <i data-lucide="train-front" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg leading-tight mb-1">${t.train_name}</h3>
+                            <span class="text-xs font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-300">#${t.train_number}</span>
+                        </div>
+                    </div>
+
+                    <!-- Timing & Duration -->
+                    <div class="flex items-center justify-between w-full md:w-2/4 px-2">
+                        <div class="text-center md:text-right">
+                            <span class="block font-bold text-white text-xl">${t.departure_time}</span>
+                            <span class="text-xs text-slate-400 uppercase">Depart</span>
+                        </div>
+                        
+                        <div class="flex-1 px-4 flex flex-col items-center">
+                            <span class="text-xs text-slate-400 mb-1">${t.duration}</span>
+                            <div class="train-track my-1"></div>
+                            <span class="text-[10px] text-emerald-400 mt-1 font-semibold tracking-wide">AVAILABLE</span>
+                        </div>
+
+                        <div class="text-center md:text-left">
+                            <span class="block font-bold text-white text-xl">${t.arrival_time}</span>
+                            <span class="text-xs text-slate-400 uppercase">Arrive</span>
+                        </div>
+                    </div>
+
+                    <!-- Price & Book -->
+                    <div class="flex flex-row md:flex-col items-center justify-between w-full md:w-1/4 border-t md:border-t-0 md:border-l border-slate-700/50 pt-4 md:pt-0 md:pl-6">
+                        <div class="text-left md:text-center md:mb-3 flex flex-col items-start md:items-center">
+                            <span class="block font-bold text-white text-2xl text-orange-400">₹${t.price.toLocaleString('en-IN')}</span>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="text-[10px] text-slate-500 uppercase">Class:</span>
+                                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-1.5 rounded">${t.class_type}</span>
+                            </div>
+                        </div>
+                        <button onclick="bookTrain('${trainDataStr}')" class="px-8 py-3 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-xl transition-colors shadow-lg">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+            
+            document.getElementById('train-list').innerHTML = listHTML;
+            lucide.createIcons();
+
+            switchView('step-loading', 'step-results');
+        }
+
+        let selectedTrainConfig = null;
+
+        function bookTrain(trainDataEncoded) {
+            const train = JSON.parse(decodeURIComponent(trainDataEncoded));
+            selectedTrainConfig = train;
+            
+            const origin = document.getElementById('origin').value.trim().substring(0, 4).toUpperCase();
+            const dest = document.getElementById('destination').value.trim().substring(0, 4).toUpperCase();
+            const dateStr = document.getElementById('res-date').innerText;
+
+            // Populate Checkout Summary
+            document.getElementById('chk-origin').innerText = origin || "ORG";
+            document.getElementById('chk-dest').innerText = dest || "DST";
+            document.getElementById('chk-train').innerText = `${train.train_name} (${train.train_number})`;
+            document.getElementById('chk-class').innerText = train.class_type;
+            document.getElementById('chk-datetime').innerText = `${dateStr} | ${train.departure_time}`;
+
+            const baseFare = train.price;
+            const taxes = 35; // Standard IRCTC convenience fee
+            const totalFare = baseFare + taxes;
+
+            document.getElementById('chk-base-fare').innerText = `₹${baseFare.toLocaleString('en-IN')}`;
+            document.getElementById('chk-taxes').innerText = `₹${taxes.toLocaleString('en-IN')}`;
+            document.getElementById('chk-total-fare').innerText = `₹${totalFare.toLocaleString('en-IN')}`;
+            document.getElementById('btn-total-pay').innerText = `₹${totalFare.toLocaleString('en-IN')}`;
+
+            switchView('step-results', 'step-checkout');
+            lucide.createIcons(); 
+        }
+
+        function processPayment() {
+            const btn = document.getElementById('pay-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<span class="loader w-5 h-5 border-[2px] border-white/20 border-b-white !animation-none"></span> Processing...`;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                switchView('step-checkout', 'step-processing');
+            }, 300);
+
+            setTimeout(() => {
+                const train = selectedTrainConfig;
+                const origin = document.getElementById('origin').value.trim().substring(0, 4).toUpperCase();
+                const dest = document.getElementById('destination').value.trim().substring(0, 4).toUpperCase();
+                const dateStr = document.getElementById('res-date').innerText;
+
+                // Populate Railway Ticket
+                document.getElementById('conf-train-no').innerText = `${train.train_name} (${train.train_number})`;
+                
+                document.getElementById('conf-code-origin').innerText = origin || "ORG";
+                document.getElementById('conf-time-origin').innerText = train.departure_time;
+                
+                document.getElementById('conf-code-dest').innerText = dest || "DST";
+                document.getElementById('conf-time-dest').innerText = train.arrival_time;
+                
+                document.getElementById('conf-duration').innerText = train.duration;
+                document.getElementById('conf-full-date').innerText = dateStr;
+                
+                // Random PNR (10 digits for railways)
+                const pnr = Math.floor(1000000000 + Math.random() * 9000000000);
+                document.getElementById('conf-pnr').innerText = pnr;
+                
+                document.getElementById('conf-class').innerText = train.class_type;
+                
+                // Random seat like B4 / 23 or C1 / 14
+                const coaches = ['A1', 'A2', 'B1', 'B2', 'B3', 'B4', 'C1', 'C2', 'S1', 'S2'];
+                const randomCoach = coaches[Math.floor(Math.random() * coaches.length)];
+                const randomSeat = Math.floor(Math.random() * 72) + 1;
+                document.getElementById('conf-seat').innerText = `${randomCoach} / ${randomSeat}`;
+                
+                const finalPrice = train.price + 35; 
+                document.getElementById('conf-price').innerText = `₹${finalPrice.toLocaleString('en-IN')}`;
+
+                switchView('step-processing', 'step-success');
+                
+                btn.innerHTML = originalContent;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
+            }, 2500);
+        }
+
+        // The Ultimate Auto-Discovery Fetch Function
+        async function fetchWithRetry(payload) {
+            let modelsToTry = [];
+            if (apiKey && apiKey !== "YOUR_API_KEY_HERE") {
+                try {
+                    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                    if (listRes.ok) {
+                        const listData = await listRes.json();
+                        modelsToTry = listData.models
+                            .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"))
+                            .map(m => m.name.replace('models/', ''));
+                        modelsToTry.sort((a, b) => {
+                            if (a.includes('flash') && !b.includes('flash')) return -1;
+                            if (!a.includes('flash') && b.includes('flash')) return 1;
+                            return 0;
+                        });
+                    }
+                } catch (err) { }
+                if (modelsToTry.length === 0) {
+                    modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-pro"];
+                }
+            } else {
+                modelsToTry = ["gemini-2.5-flash-preview-09-2025"];
+            }
+
+            let lastError = null;
+
+            for (const model of modelsToTry) {
+                const apiVersion = model.includes('preview') || model.includes('experimental') || model.includes('2.0') ? 'v1beta' : 'v1';
+                const url = `https://generativelanguage.googleapis.com/${apiVersion}/models/${model}:generateContent?key=${apiKey}`;
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const result = await response.json();
+                    let textContent = result.candidates[0].content.parts[0].text;
+                    textContent = textContent.replace(/```json/gi, '').replace(/```/g, '').trim();
+                    const firstBrace = textContent.indexOf('{');
+                    const lastBrace = textContent.lastIndexOf('}');
+                    if (firstBrace !== -1 && lastBrace !== -1) {
+                        textContent = textContent.substring(firstBrace, lastBrace + 1);
+                    }
+                    return JSON.parse(textContent);
+                } catch (e) { lastError = e; }
+            }
+            throw lastError || new Error("API failed");
+        }
+    </script>
+</body>
+</html>

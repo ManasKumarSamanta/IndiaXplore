@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Cabs - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs (Taxi Yellow/Amber variants) */
+        .blob { position: fixed; filter: blur(80px); z-index: -1; opacity: 0.3; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #eab308; animation-delay: 0s; }
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #f59e0b; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-yellow-accent { color: #facc15; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-bottom-color: #facc15;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Checkmark Animation for Success */
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+        }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+
+        /* Route Line */
+        .route-line {
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: 24px;
+            width: 2px;
+            background-color: #475569;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-yellow-500 selection:text-slate-900">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-yellow-500">Xplore</span></span>
+        </a>
+        <a href="tourism.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+        </a>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <main class="pt-32 pb-24 px-6 max-w-3xl mx-auto min-h-screen flex flex-col gap-8 relative">
+        
+        <!-- STEP 1: Search Section -->
+        <div id="step-search" class="w-full transition-all duration-500">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-yellow-500/20 mb-6 ring-1 ring-yellow-500/30 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+                    <img src="taxi-svgrepo-com.png" alt="Cab Logo" class="w-12 h-12 object-contain drop-shadow-[0_2px_10px_rgba(234,179,8,0.4)]" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1048/1048313.png'">
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Book a Ride</h1>
+                <p class="text-slate-300 max-w-lg mx-auto">Get a ride in minutes. Enter specific local landmarks or areas to find your perfect cab.</p>
+            </div>
+
+            <div class="glass-panel rounded-[32px] p-6 md:p-10 border-t border-yellow-500/30 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="space-y-6 relative z-10">
+                    
+                    <div class="relative pl-8">
+                        <div class="route-line hidden md:block"></div>
+                        
+                        <!-- Pickup -->
+                        <div class="relative mb-6">
+                            <div class="absolute -left-8 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-full bg-emerald-500 border-4 border-[#0f172a] z-10 hidden md:block"></div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Pickup Location</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-emerald-500"></i>
+                                </div>
+                                <input type="text" id="pickup" placeholder="e.g. Park Street, Kolkata" 
+                                    class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-yellow-500 transition-colors">
+                            </div>
+                        </div>
+
+                        <!-- Dropoff -->
+                        <div class="relative">
+                            <div class="absolute -left-8 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-sm bg-rose-500 border-4 border-[#0f172a] z-10 hidden md:block"></div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Drop-off Location</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-rose-500"></i>
+                                </div>
+                                <input type="text" id="dropoff" placeholder="e.g. Howrah Station, Kolkata" 
+                                    class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-yellow-500 transition-colors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="handleCabSearch()" id="search-btn" class="w-full bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(234,179,8,0.4)] transition-all flex items-center justify-center gap-2 mt-4">
+                        <i data-lucide="search" class="w-5 h-5"></i> See Prices
+                    </button>
+
+                    <!-- Error State -->
+                    <div id="error-state" class="hidden bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex items-start gap-3">
+                        <i data-lucide="alert-circle" class="w-5 h-5 shrink-0 mt-0.5"></i>
+                        <span id="error-message"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE ROAST CONTAINER (Shows if they try intercity travel) -->
+        <div id="roast-container" class="hidden w-full">
+            <div class="bg-rose-500/10 border border-rose-500/30 rounded-[32px] p-8 md:p-12 text-center relative overflow-hidden shadow-[0_0_40px_rgba(244,63,94,0.1)]">
+                <div class="w-20 h-20 mx-auto bg-rose-500/20 rounded-full flex items-center justify-center mb-6 ring-1 ring-rose-500/40">
+                    <i data-lucide="train-front" class="w-10 h-10 text-rose-500"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-4">Are you lost?</h2>
+                <p id="roast-message" class="text-lg text-rose-200 leading-relaxed italic">
+                    "You want a local cab from Kolkata to Delhi? Do you want to pay my driver's mortgage while you're at it? Go book a flight, or enter a real local drop-off!"
+                </p>
+                <div class="flex gap-4 justify-center mt-8">
+                    <button onclick="goBack('roast-container', 'step-search')" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors border border-white/10 text-sm font-medium">
+                        Enter Local Locations
+                    </button>
+                    <a href="rail.html" class="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-colors border border-rose-500 text-sm font-medium shadow-lg">
+                        Go Book a Train
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Loading State -->
+        <div id="step-loading" class="hidden flex-col items-center justify-center py-20 w-full transition-all duration-500">
+            <span class="loader w-12 h-12 mb-6 border-b-yellow-500"></span>
+            <h2 class="text-2xl font-bold text-white mb-2">Locating Nearby Drivers...</h2>
+            <p class="text-yellow-400 font-medium animate-pulse">Calculating ETAs and surge pricing.</p>
+        </div>
+
+        <!-- STEP 3: Cab Results -->
+        <div id="step-results" class="hidden w-full transition-all duration-500 flex-col gap-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="goBack('step-results', 'step-search')" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-white mb-0.5 flex items-center gap-2">
+                            Select a Ride
+                        </h2>
+                        <p class="text-slate-400 text-xs truncate max-w-[250px] md:max-w-md"><span id="res-pickup"></span> → <span id="res-dropoff"></span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="cab-list" class="space-y-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- STEP 4: Checkout / Processing -->
+        <div id="step-checkout" class="hidden w-full transition-all duration-500">
+            <div class="flex items-center gap-4 mb-8">
+                <button onclick="goBack('step-checkout', 'step-results')" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                </button>
+                <h2 class="text-3xl font-bold text-white">Confirm Booking</h2>
+            </div>
+
+            <div class="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="bg-slate-900/60 rounded-2xl p-6 border border-slate-700/50 mb-8 relative z-10 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center border border-slate-600">
+                            <i data-lucide="car" class="w-8 h-8 text-yellow-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white" id="chk-type">Cab Type</h3>
+                            <p class="text-sm text-slate-400" id="chk-eta">ETA: 5 mins</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-2xl font-bold text-yellow-400" id="chk-price">₹0</span>
+                        <span class="text-xs text-slate-500">Est. Total</span>
+                    </div>
+                </div>
+
+                <button onclick="processPayment()" id="pay-btn" class="w-full bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold text-lg py-4 rounded-xl shadow-[0_0_25px_rgba(234,179,8,0.4)] transition-all flex items-center justify-center gap-2 relative z-10">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i> Confirm Ride
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 5: Success Ticket -->
+        <div id="step-success" class="hidden flex-col items-center w-full transition-all duration-500">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 mx-auto mb-4">
+                    <svg class="w-full h-full" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                        <path class="checkmark-check" fill="none" stroke="#10b981" stroke-width="3" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white">Driver Assigned!</h2>
+                <p class="text-slate-400">Your ride is on the way. Meet them at the pickup point.</p>
+            </div>
+
+            <!-- Driver Card -->
+            <div class="glass-panel w-full bg-slate-800/90 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                <div class="p-6 bg-yellow-500 flex justify-between items-center text-slate-900">
+                    <span class="font-bold text-lg uppercase tracking-wider">Ride PIN (OTP)</span>
+                    <span class="font-black text-3xl tracking-widest bg-white/30 px-3 py-1 rounded" id="conf-otp"></span>
+                </div>
+                
+                <div class="p-8">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=150&h=150&fit=crop" alt="Driver" class="w-20 h-20 rounded-full border-4 border-[#0f172a] object-cover">
+                            <div class="absolute -bottom-2 -right-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border-2 border-[#0f172a] flex items-center gap-1">
+                                4.9 <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-1">Ramesh K.</h3>
+                            <p class="text-slate-400" id="conf-model">White Swift Dzire</p>
+                            <p class="text-yellow-400 font-bold mt-1 text-lg" id="conf-plate">WB 04 F 4921</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center border-t border-slate-700/50 pt-6">
+                        <div class="flex items-center gap-3 text-slate-300">
+                            <i data-lucide="phone" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="font-medium">+91 98765 43210</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-slate-500 uppercase font-bold">Est. Fare</span>
+                            <span class="font-bold text-white text-lg" id="conf-price">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="window.location.reload()" class="mt-8 text-slate-400 hover:text-white transition-colors underline text-sm font-medium">Cancel or Book Another Ride</button>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Gemini API Config
+        const apiKey = "AIzaSyByJVibgF4dxPD-R26oVAL-cAyG_ULw1LY"; 
+
+        // View Router
+        function switchView(hideId, showId) {
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+            if(showId === 'step-loading' || showId === 'step-success') {
+                document.getElementById(showId).classList.add('flex');
+            }
+        }
+
+        function goBack(currentId, targetId) {
+            document.getElementById(currentId).classList.add('hidden');
+            if(currentId === 'step-loading' || currentId === 'step-success') {
+                document.getElementById(currentId).classList.remove('flex');
+            }
+            document.getElementById(targetId).classList.remove('hidden');
+        }
+
+        async function handleCabSearch() {
+            const pickup = document.getElementById('pickup').value.trim();
+            const dropoff = document.getElementById('dropoff').value.trim();
+            const errorState = document.getElementById('error-state');
+            const errorMessage = document.getElementById('error-message');
+
+            if (!pickup || !dropoff) {
+                errorState.classList.remove('hidden');
+                errorMessage.innerText = "Please enter both pickup and drop-off locations.";
+                return;
+            }
+
+            errorState.classList.add('hidden');
+            
+            document.getElementById('res-pickup').innerText = pickup;
+            document.getElementById('res-dropoff').innerText = dropoff;
+
+            switchView('step-search', 'step-loading');
+            await fetchCabs(pickup, dropoff);
+        }
+
+        async function fetchCabs(pickup, dropoff) {
+            const prompt = `
+                Act as a local cab booking app logic processor in India.
+                The user wants to book a cab from "${pickup}" to "${dropoff}".
+
+                CRITICAL RULE:
+                Step 1: Check if this is a standard LOCAL city ride. If the user enters two COMPLETELY DIFFERENT cities (e.g., Kolkata to Bardhaman, Delhi to Mumbai) OR just vague city names instead of specific landmarks/areas within the same city, they are misusing the local cab portal. 
+                In this case, set "is_local_ride" to false, leave "cabs" empty, and write a hilarious, slightly aggressive roast in "roast_message" telling them to use a train, flight, or outstation portal instead, and to enter proper local landmarks.
+                
+                Step 2: If the locations seem like a realistic local ride (within the same city or reasonable commuting distance), set "is_local_ride" to true.
+                Generate 3 realistic cab options (Mini, Sedan, SUV). 
+                Provide a realistic total fare in INR (usually between ₹100 and ₹1500 depending on presumed local distance).
+                Generate ETAs for the driver to arrive (e.g., "4 mins").
+
+                You MUST return ONLY a valid JSON object matching this exact structure, with no markdown formatting:
+                {
+                    "is_local_ride": true,
+                    "roast_message": "Fill this only if is_local_ride is false",
+                    "cabs": [
+                        {
+                            "type": "Mini",
+                            "model": "Tata Tiago / Swift",
+                            "eta": "4 mins",
+                            "price": 350
+                        }
+                    ]
+                }
+            `;
+
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+            try {
+                const data = await fetchWithRetry(payload);
+                
+                if (data.is_local_ride === false) {
+                    document.getElementById('roast-message').innerText = `"${data.roast_message}"`;
+                    switchView('step-loading', 'roast-container');
+                } else {
+                    renderCabs(data.cabs);
+                }
+
+            } catch (error) {
+                console.error("AI Error:", error);
+                document.getElementById('step-loading').classList.add('hidden');
+                document.getElementById('step-loading').classList.remove('flex');
+                document.getElementById('step-search').classList.remove('hidden');
+                document.getElementById('error-state').classList.remove('hidden');
+                document.getElementById('error-message').innerText = "Unable to fetch cabs right now. Please try again.";
+            }
+        }
+
+        function renderCabs(cabs) {
+            const listHTML = cabs.map((c) => {
+                let icon = "car";
+                if(c.type.toLowerCase().includes('suv')) icon = "truck";
+                if(c.type.toLowerCase().includes('bike') || c.type.toLowerCase().includes('moto')) icon = "bike";
+
+                const cabDataStr = encodeURIComponent(JSON.stringify(c));
+
+                return `
+                <div onclick="bookCab('${cabDataStr}')" class="glass-panel p-5 rounded-2xl border border-white/5 hover:border-yellow-500/50 hover:bg-white/5 transition-all flex items-center justify-between cursor-pointer group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center border border-slate-600 group-hover:scale-110 transition-transform">
+                            <i data-lucide="${icon}" class="w-7 h-7 text-slate-300 group-hover:text-yellow-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg leading-tight flex items-center gap-2">
+                                ${c.type} <i data-lucide="user" class="w-3 h-3 text-slate-500"></i><span class="text-xs text-slate-500 -ml-1">${c.type.toLowerCase().includes('suv') ? '6' : '4'}</span>
+                            </h3>
+                            <p class="text-xs text-slate-400 mb-1">${c.model}</p>
+                            <span class="text-xs font-bold text-emerald-400">${c.eta} away</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-xl font-bold text-white">₹${c.price}</span>
+                    </div>
+                </div>
+            `}).join('');
+            
+            document.getElementById('cab-list').innerHTML = listHTML;
+            lucide.createIcons();
+
+            switchView('step-loading', 'step-results');
+        }
+
+        let selectedCabConfig = null;
+
+        function bookCab(cabDataEncoded) {
+            const cab = JSON.parse(decodeURIComponent(cabDataEncoded));
+            selectedCabConfig = cab;
+            
+            document.getElementById('chk-type').innerText = cab.type;
+            document.getElementById('chk-eta').innerText = `ETA: ${cab.eta}`;
+            document.getElementById('chk-price').innerText = `₹${cab.price}`;
+
+            switchView('step-results', 'step-checkout');
+        }
+
+        function generatePlate() {
+            const states = ['MH', 'DL', 'KA', 'WB', 'UP', 'TN'];
+            const state = states[Math.floor(Math.random() * states.length)];
+            const rto = String(Math.floor(Math.random() * 90) + 10).padStart(2, '0');
+            const series = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            const num = String(Math.floor(Math.random() * 9000) + 1000);
+            return `${state} ${rto} ${series} ${num}`;
+        }
+
+        function processPayment() {
+            const btn = document.getElementById('pay-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<span class="loader w-5 h-5 border-[2px] border-slate-900 border-b-transparent !animation-none"></span>`;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                const cab = selectedCabConfig;
+                
+                // Random OTP
+                document.getElementById('conf-otp').innerText = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('conf-model').innerText = cab.model;
+                document.getElementById('conf-plate').innerText = generatePlate();
+                document.getElementById('conf-price').innerText = `₹${cab.price}`;
+
+                switchView('step-checkout', 'step-success');
+                
+                btn.innerHTML = originalContent;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
+            }, 2000);
+        }
+
+        // The Ultimate Auto-Discovery Fetch Function
+        async function fetchWithRetry(payload) {
+            let modelsToTry = [];
+            if (apiKey && apiKey !== "YOUR_API_KEY_HERE") {
+                try {
+                    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                    if (listRes.ok) {
+                        const listData = await listRes.json();
+                        modelsToTry = listData.models
+                            .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"))
+                            .map(m => m.name.replace('models/', ''));
+                        modelsToTry.sort((a, b) => {
+                            if (a.includes('flash') && !b.includes('flash')) return -1;
+                            if (!a.includes('flash') && b.includes('flash')) return 1;
+                            return 0;
+                        });
+                    }
+                } catch (err) { }
+                if (modelsToTry.length === 0) {
+                    modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-pro"];
+                }
+            } else {
+                modelsToTry = ["gemini-2.5-flash-preview-09-2025"];
+            }
+
+            let lastError = null;
+
+            for (const model of modelsToTry) {
+                const apiVersion = model.includes('preview') || model.includes('experimental') || model.includes('2.0') ? 'v1beta' : 'v1';
+                const url = `https://generativelanguage.googleapis.com/${apiVersion}/models/${model}:generateContent?key=${apiKey}`;
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const result = await response.json();
+                    let textContent = result.candidates[0].content.parts[0].text;
+                    textContent = textContent.replace(/```json/gi, '').replace(/```/g, '').trim();
+                    const firstBrace = textContent.indexOf('{');
+                    const lastBrace = textContent.lastIndexOf('}');
+                    if (firstBrace !== -1 && lastBrace !== -1) {
+                        textContent = textContent.substring(firstBrace, lastBrace + 1);
+                    }
+                    return JSON.parse(textContent);
+                } catch (e) { lastError = e; }
+            }
+            throw lastError || new Error("API failed");
+        }
+    </script>
+</body>
+</html>

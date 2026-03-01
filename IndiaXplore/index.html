@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiaXplore - Unified Journey</title>
+    <!-- Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Auth0 SPA SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; /* Dark slate background */
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs */
+        .blob {
+            position: fixed;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 20s infinite alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #4f46e5; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #ec4899; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #06b6d4; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Scroll Animation Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Accent Colors from Images */
+        .text-coral { color: #DF6951; }
+        .bg-coral { background-color: #DF6951; }
+        .text-orange-accent { color: #F1A501; }
+        .bg-orange-accent { background-color: #F1A501; }
+
+        /* Fancy underline for hero text */
+        .hero-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .hero-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            bottom: 8px;
+            left: 0;
+            background-color: #DF6951;
+            z-index: -1;
+            opacity: 0.8;
+            border-radius: 4px;
+        }
+
+        /* Scanning effect for Travel Pass */
+        @keyframes scan {
+            0%, 100% { top: 8%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            50% { top: 85%; }
+        }
+        .scanner-line {
+            animation: scan 2.5s ease-in-out infinite;
+        }
+
+        /* Testimonial Animation Styles */
+        .testimonial-card {
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 2rem;
+            right: 0;
+            width: 100%;
+            max-width: 32rem; 
+        }
+        
+        .testi-state-1 {
+            z-index: 30;
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+            pointer-events: auto;
+        }
+        
+        .testi-state-2 {
+            z-index: 20;
+            opacity: 0.5;
+            transform: translateY(3rem) translateX(2rem) scale(0.95);
+            pointer-events: none;
+        }
+        
+        .testi-state-3 {
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(1rem) translateX(-3rem) scale(0.95);
+            pointer-events: none;
+        }
+        
+        @media (max-width: 640px) {
+            .testi-state-2, .testi-state-3 { opacity: 0; pointer-events: none; transform: scale(0.9); }
+            .testimonial-card { right: auto; left: 0; }
+        }
+
+        /* Custom Scrollbar for states dropdown */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-accent selection:text-white">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <!-- Floating Top Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto transition-all duration-300">
+        <div class="flex justify-between items-center w-full">
+            <!-- Logo -->
+            <a href="#hero" class="flex items-center gap-2">
+                <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-orange-accent">Xplore</span></span>
+            </a>
+
+            <!-- Desktop Links -->
+            <ul class="hidden md:flex space-x-6 lg:space-x-8 items-center">
+                <li><a href="#hero" class="nav-link text-sm font-medium transition-colors text-orange-accent" data-target="hero" data-i18n="nav_home">Home</a></li>
+                
+                <!-- States Dropdown Menu -->
+                <li>
+                    <div class="relative group">
+                        <a href="#" class="nav-link text-sm font-medium transition-colors text-slate-300 hover:text-white flex items-center gap-1" data-target="states">
+                            <span data-i18n="nav_states">States</span> <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div class="absolute left-0 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50">
+                             <div class="absolute -top-4 left-0 w-full h-4"></div>
+                             
+                             <div class="glass-panel p-2 rounded-2xl shadow-xl border border-white/10 bg-[#0f172a]/95 backdrop-blur-2xl max-h-[60vh] overflow-y-auto custom-scrollbar">
+                                <h4 class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">States</h4>
+                                <ul class="flex flex-col">
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Andhra Pradesh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Arunachal Pradesh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Assam</a></li>
+                                    <li><a href="bihar.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Bihar</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Chhattisgarh</a></li>
+                                    <li><a href="goa.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Goa</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Gujarat</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Haryana</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Himachal Pradesh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Jharkhand</a></li>
+                                    <li><a href="karnataka.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Karnataka</a></li>
+                                    <li><a href="kerala.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Kerala</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Madhya Pradesh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Maharashtra</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Manipur</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Meghalaya</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Mizoram</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Nagaland</a></li>
+                                    <li><a href="odisha.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Odisha</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Punjab</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Rajasthan</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Sikkim</a></li>
+                                    <li><a href="tn.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Tamil Nadu</a></li>
+                                    <li><a href="telengana.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Telangana</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Tripura</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Uttar Pradesh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Uttarakhand</a></li>
+                                    <li><a href="wb.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">West Bengal</a></li>
+                                </ul>
+                                <div class="h-px bg-white/10 my-2 mx-2"></div>
+                                <h4 class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Union Territories</h4>
+                                <ul class="flex flex-col">
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Andaman and Nicobar Islands</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Chandigarh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Dadra and Nagar Haveli & Daman and Diu</a></li>
+                                    <li><a href="delhi.html" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Delhi</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Jammu and Kashmir</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Ladakh</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Lakshadweep</a></li>
+                                    <li><a href="#" class="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">Puducherry</a></li>
+                                </ul>
+                             </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="#services" class="nav-link text-sm font-medium transition-colors text-slate-300 hover:text-white" data-target="services" data-i18n="nav_services">Services</a></li>
+                <li><a href="#destinations" class="nav-link text-sm font-medium transition-colors text-slate-300 hover:text-white" data-target="destinations" data-i18n="nav_destinations">Destinations</a></li>
+                <li><a href="#tourism" class="nav-link text-sm font-medium transition-colors text-slate-300 hover:text-white" data-target="tourism" data-i18n="nav_tourism">Tourism</a></li>
+                <li><a href="#medical" class="nav-link text-sm font-medium transition-colors text-slate-300 hover:text-white" data-target="medical" data-i18n="nav_medical">Medical</a></li>
+            </ul>
+
+            <!-- Auth Buttons & Language Container -->
+            <div id="auth-container" class="hidden md:flex items-center space-x-4">
+                <!-- Logged Out State -->
+                <button id="btn-login" class="text-sm font-medium text-slate-200 hover:text-white transition-colors cursor-pointer" data-i18n="nav_login">Login</button>
+                <button id="btn-signup" class="px-5 py-2 rounded-full border border-white/20 text-sm font-medium hover:bg-white/10 transition-colors cursor-pointer" data-i18n="nav_signup">Sign up</button>
+                
+                <!-- Logged In State (Hidden initially) -->
+                <div id="user-profile" class="hidden items-center gap-3">
+                    <img id="user-avatar" src="" alt="Profile" class="w-8 h-8 rounded-full border border-white/20">
+                    <span id="user-name" class="text-sm font-medium text-white"></span>
+                    <button id="btn-logout" class="text-xs text-slate-400 hover:text-white transition-colors ml-2"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+                </div>
+
+                <!-- Interactive Language Dropdown -->
+                <div class="relative group ml-2 border-l border-white/20 pl-4">
+                    <div class="flex items-center gap-1 cursor-pointer text-sm font-bold text-white bg-white/10 px-3 py-1.5 rounded-full hover:bg-white/20 transition-colors">
+                        <i data-lucide="globe" class="w-4 h-4 text-orange-accent"></i>
+                        <span id="current-lang-display">EN</span> 
+                        <i data-lucide="chevron-down" class="w-3 h-3 transition-transform group-hover:rotate-180"></i>
+                    </div>
+                    
+                    <div class="absolute right-0 top-full mt-4 w-32 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-50">
+                        <!-- Invisible bridge to keep hover active -->
+                        <div class="absolute -top-4 left-0 w-full h-4"></div>
+                        <div class="glass-panel p-2 rounded-2xl shadow-xl border border-white/10 bg-[#0f172a]/95 backdrop-blur-2xl">
+                            <ul class="flex flex-col gap-1">
+                                <li><button onclick="setLanguage('en')" class="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors font-medium">English</button></li>
+                                <li><button onclick="setLanguage('hi')" class="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors font-medium">हिन्दी (Hindi)</button></li>
+                                <li><button onclick="setLanguage('bn')" class="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors font-medium">বাংলা (Bengali)</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white p-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-24"> 
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="min-h-[85vh] flex items-center justify-center px-6 pt-10">
+            <div class="max-w-7xl w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20 reveal active">
+                <!-- Hero Text -->
+                <div class="flex-1 text-center lg:text-left">
+                    <h3 class="text-coral font-bold tracking-widest uppercase text-sm md:text-base mb-6" data-i18n="hero_subtitle">
+                        Best Destinations Around India
+                    </h3>
+                    <h1 class="text-5xl md:text-7xl lg:text-[80px] font-bold mb-8 leading-[1.1] text-white" data-i18n="hero_title">
+                        Travel, <span>enjoy</span><br/>
+                        and live a new<br/>
+                        and full life
+                    </h1>
+                    <p id="typewriter" class="text-lg text-slate-300 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed min-h-[90px]">
+                        <span id="typewriter-text"></span><span class="animate-pulse font-light text-orange-accent">|</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+                        <a href="#destinations" class="px-8 py-4 rounded-xl bg-orange-accent hover:bg-orange-500 text-white font-semibold transition-all shadow-[0_10px_20px_rgba(241,165,1,0.3)]" data-i18n="hero_btn">
+                            Find out more
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Image Element -->
+                <div class="flex-1 relative w-full max-w-lg lg:max-w-none">
+                    <div class="absolute top-10 -left-10 w-24 h-24 bg-blue-500/30 rounded-full blur-2xl"></div>
+                    <div class="absolute bottom-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-2xl"></div>
+                    
+                    <div class="glass-panel rounded-[40px] p-4 relative z-10 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                        <img src="India Map.png" alt="Traveler enjoying view" class="rounded-[32px] w-full h-[500px] object-cover" />
+                        
+                        <!-- Floating Badges -->
+                        <div class="absolute top-12 -left-4 md:-left-12 glass-panel bg-slate-800/95 px-5 py-4 rounded-2xl flex items-center gap-4 shadow-2xl z-20 border border-white/20">
+                            <div class="bg-emerald-500/20 p-2 rounded-full text-emerald-400">
+                                <i data-lucide="compass" class="w-6 h-6"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-slate-400 uppercase tracking-wider mb-0.5" data-i18n="hero_badge_sub">Discover</span>
+                                <span class="text-sm font-bold text-white" data-i18n="hero_badge_main">Incredible India</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Services Section -->
+        <section id="services" class="py-24 px-6 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h3 class="text-slate-400 font-semibold tracking-widest uppercase text-sm mb-3" data-i18n="services_category">Category</h3>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white" data-i18n="services_title">We Offer Best Services</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <div class="rounded-3xl p-10 text-center reveal transition-all duration-300 flex flex-col items-center bg-gradient-to-b from-[#3b3281]/90 to-[#2b2566]/90 border border-white/5 shadow-xl hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                            <img src="plane-svgrepo-com.png" alt="Best Flights" class="w-16 h-16 object-contain drop-shadow-md" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3125/3125713.png'">
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-white" data-i18n="srv1_title">Best Flights</h4>
+                        <p class="text-slate-300/80 text-sm leading-relaxed" data-i18n="srv1_desc">Find the most convenient and affordable domestic and international flights tailored to your schedule.</p>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="rounded-3xl p-10 text-center reveal transition-all duration-300 flex flex-col items-center bg-gradient-to-b from-[#2c657d]/90 to-[#1e485a]/90 border border-white/5 shadow-xl hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                            <img src="mic-karaoke-svgrepo-com.png" alt="Local Events" class="w-16 h-16 object-contain drop-shadow-md" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3293/3293125.png'">
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-white" data-i18n="srv2_title">Local Events</h4>
+                        <p class="text-slate-300/80 text-sm leading-relaxed" data-i18n="srv2_desc">Discover vibrant cultural festivals, local concerts, and exclusive events across the country.</p>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="rounded-3xl p-10 text-center reveal transition-all duration-300 flex flex-col items-center bg-gradient-to-b from-[#336d94]/90 to-[#254f6f]/90 border border-white/5 shadow-xl hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                            <img src="settings-cogwheel-svgrepo-com.png" alt="Customization" class="w-16 h-16 object-contain drop-shadow-md" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3143/3143685.png'">
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-white" data-i18n="srv3_title">Customization</h4>
+                        <p class="text-slate-300/80 text-sm leading-relaxed" data-i18n="srv3_desc">Tailor your itinerary perfectly to suit your specific preferences, timeline, and travel goals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Top Destinations Section -->
+        <section id="destinations" class="py-24 px-6 relative">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h3 class="text-slate-400 font-semibold tracking-widest uppercase text-sm mb-3" data-i18n="dest_subtitle">Top Selling</h3>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white" data-i18n="dest_title">Top Destinations</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Destination 1 -->
+                    <a href="jaipur.html" class="block glass-panel rounded-[32px] overflow-hidden group reveal cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Jaipur" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        </div>
+                        <div class="p-8 bg-slate-900/60 backdrop-blur-md relative border-t border-white/5">
+                            <div class="flex justify-between items-center mb-4 text-lg text-slate-200 font-medium">
+                                <span data-i18n="dest1_name">Jaipur, Rajasthan</span>
+                                <span>₹25k</span>
+                            </div>
+                            <div class="flex items-center text-slate-400 text-sm gap-3">
+                                <i data-lucide="navigation" class="w-4 h-4 fill-current"></i>
+                                <span data-i18n="dest_days_10">10 Days Trip</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Destination 2 -->
+                    <a href="agra.html" class="block glass-panel rounded-[32px] overflow-hidden group reveal cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Agra" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        </div>
+                        <div class="p-8 bg-slate-900/60 backdrop-blur-md relative border-t border-white/5">
+                            <div class="flex justify-between items-center mb-4 text-lg text-slate-200 font-medium">
+                                <span data-i18n="dest2_name">Agra, UP</span>
+                                <span>₹18k</span>
+                            </div>
+                            <div class="flex items-center text-slate-400 text-sm gap-3">
+                                <i data-lucide="navigation" class="w-4 h-4 fill-current"></i>
+                                <span data-i18n="dest_days_7">7 Days Trip</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Destination 3 -->
+                    <div class="relative reveal group">
+                        <!-- Decorative spirals -->
+                        <div class="absolute top-1/2 -right-12 transform -translate-y-1/2 w-24 h-48 border-[1px] border-slate-600 rounded-full opacity-30 hidden lg:block z-0"></div>
+                        <div class="absolute top-1/2 -right-8 transform -translate-y-1/2 w-24 h-40 border-[1px] border-slate-600 rounded-full opacity-30 hidden lg:block z-0"></div>
+                        
+                        <a href="kerala_backwaters.html" class="block glass-panel rounded-[32px] overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 relative z-10">
+                            <div class="h-80 overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kerala" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            </div>
+                            <div class="p-8 bg-slate-900/60 backdrop-blur-md relative border-t border-white/5">
+                                <div class="flex justify-between items-center mb-4 text-lg text-slate-200 font-medium">
+                                    <span data-i18n="dest3_name">Kerala Backwaters</span>
+                                    <span>₹40k</span>
+                                </div>
+                                <div class="flex items-center text-slate-400 text-sm gap-3">
+                                    <i data-lucide="navigation" class="w-4 h-4 fill-current"></i>
+                                    <span data-i18n="dest_days_15">15 Days Trip</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Tourism Section -->
+        <section id="tourism" class="py-24 flex items-center justify-center px-6">
+            <div class="max-w-7xl mx-auto w-full flex justify-end">
+                <div class="glass-panel rounded-[2rem] p-8 md:p-10 max-w-4xl w-full reveal flex flex-col md:flex-row items-center gap-10 hover:shadow-2xl transition-all duration-500">
+                    <div class="flex-1">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6 ring-1 ring-emerald-500/30">
+                            <i data-lucide="compass" class="w-7 h-7"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="tour_title">Tourism Portal</h2>
+                        <h3 class="text-lg text-emerald-300 font-medium mb-4" data-i18n="tour_subtitle">Discover the Colors of India</h3>
+                        <p class="text-slate-300 text-base leading-relaxed mb-8" data-i18n="tour_desc">
+                            Visiting a specific state for leisure or cultural exploration? Connect directly with state-specific tourism boards to book authorized local experiences and plan your itinerary securely.
+                        </p>
+                        <a href="tourism.html" class="inline-block px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors shadow-[0_10px_20px_rgba(16,185,129,0.2)] text-sm" data-i18n="tour_btn">
+                            Explore State Portals
+                        </a>
+                    </div>
+                    <div class="w-full md:w-5/12 aspect-[4/5] rounded-3xl overflow-hidden relative border border-white/10 group">
+                        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="India Tourism" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 flex items-center gap-3">
+                            <i data-lucide="map" class="w-6 h-6 text-emerald-400"></i>
+                            <span class="text-white font-medium text-sm tracking-widest uppercase" data-i18n="tour_map">Interactive Map</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Medical Section -->
+        <section id="medical" class="py-24 flex items-center justify-center px-6">
+            <div class="max-w-7xl mx-auto w-full flex justify-start">
+                <div class="glass-panel rounded-[2rem] p-8 md:p-10 max-w-4xl w-full reveal flex flex-col md:flex-row-reverse items-center gap-10 border-t-4 border-t-rose-500/50 hover:shadow-2xl transition-all duration-500">
+                    <div class="flex-1">
+                        <div class="w-14 h-14 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center mb-6 ring-1 ring-rose-500/30">
+                            <i data-lucide="stethoscope" class="w-7 h-7"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="med_title">Medical Visits</h2>
+                        <h3 class="text-lg text-rose-300 font-medium mb-4" data-i18n="med_subtitle">World-Class Care & Healing</h3>
+                        <p class="text-slate-300 text-base leading-relaxed mb-8" data-i18n="med_desc">
+                            Traveling for healthcare? India offers globally recognized medical treatments and ancient wellness traditions. Apply for your medical e-Visa, and coordinate appointments with accredited hospitals.
+                        </p>
+                        <a href="medical.html" class="inline-block px-6 py-3 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-medium transition-colors shadow-[0_10px_20px_rgba(244,63,94,0.2)] text-sm" data-i18n="med_btn">
+                            Find Healthcare
+                        </a>
+                    </div>
+                    <div class="w-full md:w-5/12 aspect-[4/5] rounded-3xl overflow-hidden relative border border-white/10 group">
+                        <img src="https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Healthcare in India" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 flex items-center gap-3">
+                            <i data-lucide="activity" class="w-6 h-6 text-rose-400"></i>
+                            <span class="text-white font-medium text-sm tracking-widest uppercase" data-i18n="med_acc_hosp">Accredited Hospitals</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Travel Pass Section -->
+        <section id="pass" class="py-24 flex items-center justify-center px-6">
+            <div class="max-w-7xl mx-auto w-full flex justify-end">
+                <div class="glass-panel rounded-[2rem] p-8 md:p-12 max-w-4xl w-full reveal flex flex-col md:flex-row items-center gap-12 relative overflow-hidden hover:shadow-2xl transition-all duration-500">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="flex-1 relative z-10">
+                        <div id="icon-scanner" class="w-14 h-14 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6 ring-1 ring-blue-500/30">
+                            <img src="scan-qrcode-ecommerce-svgrepo-com.png" alt="QR Scanner" class="w-8 h-8 object-contain drop-shadow-md" onerror="this.src='https://www.pngmart.com/files/10/Qr-Code-Background-PNG.png'">
+                        </div>
+                        
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="pass_title">Digital Travel Pass</h2>
+                        <h3 class="text-lg text-blue-300 font-medium mb-4" data-i18n="pass_subtitle">Replaces Physical Govt. IDs</h3>
+                        
+                        <p class="text-slate-300 text-base leading-relaxed mb-8" data-i18n="pass_desc">
+                            Your ultimate authentication tool. Instead of presenting physical IDs at every checkpoint, simply scan your secure dynamic QR code to verify your identity seamlessly at airports and monuments.
+                        </p>
+                        
+                        <a href="pass.html" class="inline-block px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-medium transition-colors shadow-[0_10px_20px_rgba(37,99,235,0.3)] text-sm" data-i18n="pass_btn">
+                            Generate My Pass
+                        </a>
+                    </div>
+
+                    <div class="w-full md:w-5/12 flex justify-center relative z-10 mt-6 md:mt-0">
+                        <div class="glass-panel p-6 rounded-3xl border border-blue-500/30 bg-slate-900/80 shadow-2xl w-full aspect-square flex flex-col items-center justify-center relative overflow-hidden group">
+                            <!-- Scanning effect line -->
+                            <div class="absolute top-0 left-0 w-full h-1 bg-blue-400/60 shadow-[0_0_15px_#60a5fa] scanner-line"></div>
+                            
+                            <div class="bg-white p-4 rounded-2xl mb-4 transform group-hover:scale-105 transition-transform">
+                                <img src="qr.png" alt="Digital Travel QR" class="w-24 h-24 object-contain mix-blend-multiply">
+                            </div>
+                            <p class="text-xs text-blue-300 uppercase tracking-widest font-semibold" data-i18n="pass_scan_ready">Ready to Scan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section (We do NOT translate the actual reviews) -->
+        <section id="testimonials" class="py-24 px-6 relative">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+                <div class="flex-1 reveal">
+                    <h3 class="text-slate-400 font-semibold tracking-widest uppercase text-sm mb-3" data-i18n="testi_subtitle">Testimonials</h3>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-10 leading-tight" data-i18n="testi_title">What People Say<br/>About Us.</h2>
+                    <div class="flex gap-4">
+                        <div class="testi-dot w-4 h-4 rounded-full bg-white shadow-lg cursor-pointer transition-colors duration-300"></div>
+                        <div class="testi-dot w-4 h-4 rounded-full bg-slate-600 cursor-pointer hover:bg-slate-500 transition-colors duration-300"></div>
+                        <div class="testi-dot w-4 h-4 rounded-full bg-slate-600 cursor-pointer hover:bg-slate-500 transition-colors duration-300"></div>
+                    </div>
+                </div>
+                <div class="flex-1 relative reveal w-full mt-10 lg:mt-0 min-h-[350px] sm:min-h-[400px]">
+                    <!-- Card 1 -->
+                    <div class="testimonial-card testi-state-1 glass-panel p-8 md:p-10 rounded-3xl shadow-2xl bg-slate-800/90 border-white/10 ml-auto">
+                        <img src="People/Guy 3.png" alt="Aarav Sharma" class="w-16 h-16 rounded-full absolute -top-8 -left-8 border-4 border-[#0f172a] object-cover shadow-lg">
+                        <p class="text-slate-300 leading-relaxed mb-8 font-medium text-lg">"Using IndiaXplore completely changed how I plan my vacations. The AI itineraries and digital travel pass made exploring different states completely frictionless."</p>
+                        <h4 class="text-white font-bold text-xl mb-1">Aarav Sharma</h4>
+                        <p class="text-slate-400 text-sm">Software Engineer, Bengaluru</p>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="testimonial-card testi-state-2 glass-panel p-8 md:p-10 rounded-3xl shadow-2xl bg-slate-800/90 border-white/10 ml-auto">
+                        <img src="People/Guy 4.png" alt="Rohan Desai" class="w-16 h-16 rounded-full absolute -top-8 -left-8 border-4 border-[#0f172a] object-cover shadow-lg">
+                        <p class="text-slate-300 leading-relaxed mb-8 font-medium text-lg">"I was amazed by the seamless booking process and the personalized itinerary. This platform truly transformed how our team travels across the country."</p>
+                        <h4 class="text-white font-bold text-xl mb-1">Rohan Desai</h4>
+                        <p class="text-slate-400 text-sm">Entrepreneur, Mumbai</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="testimonial-card testi-state-3 glass-panel p-8 md:p-10 rounded-3xl shadow-2xl bg-slate-800/90 border-white/10 ml-auto">
+                        <img src="People/Woman 2.png" alt="Ananya Gupta" class="w-16 h-16 rounded-full absolute -top-8 -left-8 border-4 border-[#0f172a] object-cover shadow-lg">
+                        <p class="text-slate-300 leading-relaxed mb-8 font-medium text-lg">"An absolute game-changer! Finding local events and the perfect medical facilities all in one place made my trip to India incredibly stress-free."</p>
+                        <h4 class="text-white font-bold text-xl mb-1">Ananya Gupta</h4>
+                        <p class="text-slate-400 text-sm">Travel Blogger, New Delhi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-20 pb-10 px-6 relative z-10 bg-[#0f172a]/80 backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
+            <div class="lg:col-span-2">
+                <a href="#hero" class="flex items-center gap-2 mb-6">
+                    <span class="font-extrabold text-3xl tracking-tight text-white">India<span class="text-orange-accent">Xplore</span></span>
+                </a>
+                <p class="text-slate-400 text-base leading-relaxed mb-6 max-w-sm" data-i18n="footer_desc">Book your trip in minute, get full Control for much longer.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-6" data-i18n="footer_comp">Company</h4>
+                <ul class="space-y-4 text-slate-400 text-base">
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_about">About</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_careers">Careers</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_mobile">Mobile</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-6" data-i18n="footer_contact">Contact</h4>
+                <ul class="space-y-4 text-slate-400 text-base">
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_help">Help/FAQ</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_press">Press</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_affil">Affiliates</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-6" data-i18n="footer_more">More</h4>
+                <ul class="space-y-4 text-slate-400 text-base">
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_fees">Airlinefees</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_airline">Airline</a></li>
+                    <li><a href="#" class="hover:text-orange-accent transition-colors" data-i18n="footer_tips">Low fare tips</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text-slate-500 text-sm font-medium" data-i18n="footer_rights">
+            All rights reserved @ IndiaXplore.co
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- TRANSLATION LOGIC ---
+        const translations = {
+            en: {
+                nav_home: "Home",
+                nav_states: "States",
+                nav_services: "Services",
+                nav_destinations: "Destinations",
+                nav_tourism: "Tourism",
+                nav_medical: "Medical",
+                nav_login: "Login",
+                nav_signup: "Sign up",
+                hero_subtitle: "Best Destinations Around India",
+                hero_title: "Travel, <span class='hero-underline'>enjoy</span><br/>and live a new<br/>and full life",
+                hero_btn: "Find out more",
+                hero_badge_sub: "Discover",
+                hero_badge_main: "Incredible India",
+                services_category: "Category",
+                services_title: "We Offer Best Services",
+                srv1_title: "Best Flights",
+                srv1_desc: "Find the most convenient and affordable domestic and international flights tailored to your schedule.",
+                srv2_title: "Local Events",
+                srv2_desc: "Discover vibrant cultural festivals, local concerts, and exclusive events across the country.",
+                srv3_title: "Customization",
+                srv3_desc: "Tailor your itinerary perfectly to suit your specific preferences, timeline, and travel goals.",
+                dest_subtitle: "Top Selling",
+                dest_title: "Top Destinations",
+                dest1_name: "Jaipur, Rajasthan",
+                dest2_name: "Agra, UP",
+                dest3_name: "Kerala Backwaters",
+                dest_days_10: "10 Days Trip",
+                dest_days_7: "7 Days Trip",
+                dest_days_15: "15 Days Trip",
+                tour_title: "Tourism Portal",
+                tour_subtitle: "Discover the Colors of India",
+                tour_desc: "Visiting a specific state for leisure or cultural exploration? Connect directly with state-specific tourism boards to book authorized local experiences and plan your itinerary securely.",
+                tour_btn: "Explore State Portals",
+                tour_map: "Interactive Map",
+                med_title: "Medical Visits",
+                med_subtitle: "World-Class Care & Healing",
+                med_desc: "Traveling for healthcare? India offers globally recognized medical treatments and ancient wellness traditions. Apply for your medical e-Visa, and coordinate appointments with accredited hospitals.",
+                med_btn: "Find Healthcare",
+                med_acc_hosp: "Accredited Hospitals",
+                pass_title: "Digital Travel Pass",
+                pass_subtitle: "Replaces Physical Govt. IDs",
+                pass_desc: "Your ultimate authentication tool. Instead of presenting physical IDs at every checkpoint, simply scan your secure dynamic QR code to verify your identity seamlessly at airports and monuments.",
+                pass_btn: "Generate My Pass",
+                pass_scan_ready: "Ready to Scan",
+                testi_subtitle: "Testimonials",
+                testi_title: "What People Say<br/>About Us.",
+                footer_desc: "Book your trip in minute, get full Control for much longer.",
+                footer_comp: "Company",
+                footer_about: "About",
+                footer_careers: "Careers",
+                footer_mobile: "Mobile",
+                footer_contact: "Contact",
+                footer_help: "Help/FAQ",
+                footer_press: "Press",
+                footer_affil: "Affiliates",
+                footer_more: "More",
+                footer_fees: "Airline fees",
+                footer_airline: "Airline",
+                footer_tips: "Low fare tips",
+                footer_rights: "All rights reserved @ IndiaXplore.co"
+            },
+            hi: {
+                nav_home: "होम",
+                nav_states: "राज्य",
+                nav_services: "सेवाएं",
+                nav_destinations: "गंतव्य",
+                nav_tourism: "पर्यटन",
+                nav_medical: "चिकित्सा",
+                nav_login: "लॉग इन",
+                nav_signup: "साइन अप",
+                hero_subtitle: "भारत के सर्वश्रेष्ठ गंतव्य",
+                hero_title: "यात्रा करें, <span>आनंद लें</span><br/>और एक नया<br/>जीवन जिएं",
+                hero_btn: "और जानें",
+                hero_badge_sub: "खोजें",
+                hero_badge_main: "अतुल्य भारत",
+                services_category: "श्रेणी",
+                services_title: "हम सर्वश्रेष्ठ सेवाएं प्रदान करते हैं",
+                srv1_title: "सर्वश्रेष्ठ उड़ानें",
+                srv1_desc: "अपने कार्यक्रम के अनुसार सबसे सुविधाजनक और किफायती घरेलू और अंतरराष्ट्रीय उड़ानें खोजें।",
+                srv2_title: "स्थानीय कार्यक्रम",
+                srv2_desc: "देश भर में जीवंत सांस्कृतिक उत्सवों, स्थानीय संगीत कार्यक्रमों और विशेष कार्यक्रमों की खोज करें।",
+                srv3_title: "अनुकूलन",
+                srv3_desc: "अपनी विशिष्ट प्राथमिकताओं, समयरेखा और यात्रा लक्ष्यों के अनुरूप अपने यात्रा कार्यक्रम को पूरी तरह से तैयार करें।",
+                dest_subtitle: "सर्वाधिक बिकने वाले",
+                dest_title: "शीर्ष गंतव्य",
+                dest1_name: "जयपुर, राजस्थान",
+                dest2_name: "आगरा, यूपी",
+                dest3_name: "केरल बैकवाटर",
+                dest_days_10: "10 दिन की यात्रा",
+                dest_days_7: "7 दिन की यात्रा",
+                dest_days_15: "15 दिन की यात्रा",
+                tour_title: "पर्यटन पोर्टल",
+                tour_subtitle: "भारत के रंगों की खोज करें",
+                tour_desc: "आराम या सांस्कृतिक अन्वेषण के लिए किसी विशिष्ट राज्य का दौरा कर रहे हैं? सुरक्षित रूप से स्थानीय अनुभवों को बुक करने के लिए पर्यटन बोर्डों से सीधे जुड़ें।",
+                tour_btn: "राज्य पोर्टलों का अन्वेषण करें",
+                tour_map: "इंटरैक्टिव मानचित्र",
+                med_title: "चिकित्सा यात्राएं",
+                med_subtitle: "विश्व स्तरीय देखभाल और उपचार",
+                med_desc: "स्वास्थ्य सेवा के लिए यात्रा कर रहे हैं? भारत विश्व स्तर पर मान्यता प्राप्त चिकित्सा उपचार प्रदान करता है। अपने चिकित्सा ई-वीज़ा के लिए आवेदन करें।",
+                med_btn: "स्वास्थ्य सेवा खोजें",
+                med_acc_hosp: "मान्यता प्राप्त अस्पताल",
+                pass_title: "डिजिटल ट्रैवल पास",
+                pass_subtitle: "भौतिक सरकारी आईडी को बदलता है",
+                pass_desc: "आपका अंतिम प्रमाणीकरण उपकरण। हर चेकपॉइंट पर भौतिक आईडी प्रस्तुत करने के बजाय, बस अपने सुरक्षित डायनेमिक क्यूआर कोड को स्कैन करें।",
+                pass_btn: "अपना पास बनाएं",
+                pass_scan_ready: "स्कैन करने के लिए तैयार",
+                testi_subtitle: "प्रशंसापत्र",
+                testi_title: "लोग हमारे बारे में<br/>क्या कहते हैं।",
+                footer_desc: "मिनटों में अपनी यात्रा बुक करें, लंबे समय तक पूरा नियंत्रण पाएं।",
+                footer_comp: "कंपनी",
+                footer_about: "हमारे बारे में",
+                footer_careers: "करियर",
+                footer_mobile: "मोबाइल",
+                footer_contact: "संपर्क",
+                footer_help: "सहायता / सामान्य प्रश्न",
+                footer_press: "प्रेस",
+                footer_affil: "सहयोगी",
+                footer_more: "अधिक",
+                footer_fees: "एयरलाइन शुल्क",
+                footer_airline: "एयरलाइन",
+                footer_tips: "कम किराए की टिप्स",
+                footer_rights: "सभी अधिकार सुरक्षित @ IndiaXplore.co"
+            },
+            bn: {
+                nav_home: "হোম",
+                nav_states: "রাজ্য",
+                nav_services: "পরিষেবা",
+                nav_destinations: "গন্তব্য",
+                nav_tourism: "পর্যটন",
+                nav_medical: "চিকিৎসা",
+                nav_login: "লগইন",
+                nav_signup: "সাইন আপ",
+                hero_subtitle: "ভারতের সেরা গন্তব্যসমূহ",
+                hero_title: "ভ্রমণ করুন, <span>উপভোগ করুন</span><br/>এবং একটি নতুন<br/>জীবন যাপন করুন",
+                hero_btn: "আরও জানুন",
+                hero_badge_sub: "আবিষ্কার করুন",
+                hero_badge_main: "অবিশ্বাস্য ভারত",
+                services_category: "বিভাগ",
+                services_title: "আমরা সেরা পরিষেবা প্রদান করি",
+                srv1_title: "সেরা ফ্লাইট",
+                srv1_desc: "আপনার সময়সূচী অনুযায়ী সবচেয়ে সুবিধাজনক এবং সাশ্রয়ী মূল্যের দেশীয় এবং আন্তর্জাতিক ফ্লাইট খুঁজুন।",
+                srv2_title: "স্থানীয় ইভেন্ট",
+                srv2_desc: "সারা দেশে প্রাণবন্ত সাংস্কৃতিক উৎসব, স্থানীয় কনসার্ট এবং বিশেষ ইভেন্টগুলি আবিষ্কার করুন।",
+                srv3_title: "কাস্টমাইজেশন",
+                srv3_desc: "আপনার নির্দিষ্ট পছন্দ, সময়রেখা এবং ভ্রমণের লক্ষ্যগুলির সাথে মানানসই করে আপনার ভ্রমণের যাত্রাপথ তৈরি করুন।",
+                dest_subtitle: "সর্বাধিক বিক্রিত",
+                dest_title: "শীর্ষ গন্তব্য",
+                dest1_name: "জয়পুর, রাজস্থান",
+                dest2_name: "আগ্রা, উত্তরপ্রদেশ",
+                dest3_name: "কেরালার ব্যাকওয়াটার",
+                dest_days_10: "১০ দিনের ট্রিপ",
+                dest_days_7: "৭ দিনের ট্রিপ",
+                dest_days_15: "১৫ দিনের ট্রিপ",
+                tour_title: "পর্যটন পোর্টাল",
+                tour_subtitle: "ভারতের রং আবিষ্কার করুন",
+                tour_desc: "অবসর বা সাংস্কৃতিক অন্বেষণের জন্য একটি নির্দিষ্ট রাজ্যে যাচ্ছেন? স্থানীয় অভিজ্ঞতার বুকিং করতে পর্যটন বোর্ডের সাথে সরাসরি সংযোগ করুন।",
+                tour_btn: "রাজ্য পোর্টালগুলি অন্বেষণ করুন",
+                tour_map: "ইন্টারেক্টিভ মানচিত্র",
+                med_title: "চিকিৎসা ভ্রমণ",
+                med_subtitle: "বিশ্বমানের যত্ন এবং নিরাময়",
+                med_desc: "স্বাস্থ্যসেবার জন্য ভ্রমণ করছেন? ভারত বিশ্বব্যাপী স্বীকৃত চিকিৎসা অফার করে। আপনার মেডিকেল ই-ভিসার জন্য আবেদন করুন।",
+                med_btn: "স্বাস্থ্যসেবা খুঁজুন",
+                med_acc_hosp: "স্বীকৃত হাসপাতাল",
+                pass_title: "ডিজিটাল ট্রাভেল পাস",
+                pass_subtitle: "ফিজিক্যাল সরকারি আইডির বিকল্প",
+                pass_desc: "আপনার চূড়ান্ত প্রমাণীকরণ টুল। প্রতিটি চেকপয়েন্টে ফিজিক্যাল আইডি উপস্থাপন করার পরিবর্তে, আপনার সুরক্ষিত ডায়নামিক কিউআর কোডটি স্ক্যান করুন।",
+                pass_btn: "আমার পাস তৈরি করুন",
+                pass_scan_ready: "স্ক্যান করার জন্য প্রস্তুত",
+                testi_subtitle: "প্রশংসাপত্র",
+                testi_title: "মানুষ আমাদের সম্পর্কে<br/>কী বলে।",
+                footer_desc: "মিনিটের মধ্যে আপনার ট্রিপ বুক করুন, অনেক বেশি সময়ের জন্য সম্পূর্ণ নিয়ন্ত্রণ পান।",
+                footer_comp: "কোম্পানি",
+                footer_about: "আমাদের সম্পর্কে",
+                footer_careers: "ক্যারিয়ার",
+                footer_mobile: "মোবাইল",
+                footer_contact: "যোগাযোগ",
+                footer_help: "সাহায্য / জিজ্ঞাসা",
+                footer_press: "প্রেস",
+                footer_affil: "অ্যাফিলিয়েট",
+                footer_more: "আরও",
+                footer_fees: "এয়ারলাইন ফি",
+                footer_airline: "এয়ারলাইন",
+                footer_tips: "কম ভাড়ার টিপস",
+                footer_rights: "সর্বস্বত্ব সংরক্ষিত @ IndiaXplore.co"
+            }
+        };
+
+        const typewriterTexts = {
+            en: "Embark on an unforgettable journey through the vibrant landscapes, rich heritage, and diverse cultures of India. Your unified gateway to seamless travel experiences.",
+            hi: "भारत के जीवंत परिदृश्यों, समृद्ध विरासत और विविध संस्कृतियों के माध्यम से एक अविस्मरणीय यात्रा शुरू करें। निर्बाध यात्रा अनुभवों के लिए आपका एकीकृत प्रवेश द्वार।",
+            bn: "ভারতের স্পন্দনশীল ল্যান্ডস্কেপ, সমৃদ্ধ ঐতিহ্য এবং বৈচিত্র্যময় সংস্কৃতির মধ্য দিয়ে একটি অবিস্মরণীয় যাত্রা শুরু করুন। নির্বিঘ্ন ভ্রমণ অভিজ্ঞতার জন্য আপনার একীভূত গেটওয়ে।"
+        };
+
+        // Typewriter Effect Logic
+        let currentLang = 'en';
+        let typeText = typewriterTexts[currentLang];
+        let charIndex = 0;
+        const typeSpeed = 35; 
+        let typeTimeout;
+
+        function typeWriter() {
+            if (charIndex < typeText.length) {
+                document.getElementById("typewriter-text").innerHTML += typeText.charAt(charIndex);
+                charIndex++;
+                typeTimeout = setTimeout(typeWriter, typeSpeed);
+            }
+        }
+
+        setTimeout(typeWriter, 800);
+
+        // Language Switcher Function
+        function setLanguage(langCode) {
+            currentLang = langCode;
+            document.getElementById('current-lang-display').innerText = langCode.toUpperCase();
+            
+            // Loop through all elements with data-i18n attribute and update them
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const translationKey = element.getAttribute('data-i18n');
+                if (translations[langCode] && translations[langCode][translationKey]) {
+                    // We use innerHTML to preserve spans like the hero-underline
+                    element.innerHTML = translations[langCode][translationKey];
+                }
+            });
+
+            // Restart Typewriter with new language
+            clearTimeout(typeTimeout);
+            document.getElementById("typewriter-text").innerHTML = "";
+            charIndex = 0;
+            typeText = typewriterTexts[langCode];
+            typeWriter();
+        }
+
+        // Testimonial Slider Logic
+        const testimonialsArray = document.querySelectorAll('.testimonial-card');
+        const dotsArray = document.querySelectorAll('.testi-dot');
+        let currentTesti = 0;
+        let testiInterval;
+
+        function showTestimonial(index) {
+            if (testimonialsArray.length === 0) return;
+            
+            testimonialsArray.forEach((card, i) => {
+                card.classList.remove('testi-state-1', 'testi-state-2', 'testi-state-3');
+                if (i === index) card.classList.add('testi-state-1');
+                else if (i === (index + 1) % testimonialsArray.length) card.classList.add('testi-state-2');
+                else card.classList.add('testi-state-3'); 
+            });
+
+            dotsArray.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.remove('bg-slate-600');
+                    dot.classList.add('bg-white', 'shadow-lg');
+                } else {
+                    dot.classList.remove('bg-white', 'shadow-lg');
+                    dot.classList.add('bg-slate-600');
+                }
+            });
+
+            currentTesti = index;
+        }
+
+        function startTestiAutoPlay() {
+            testiInterval = setInterval(() => {
+                showTestimonial((currentTesti + 1) % testimonialsArray.length);
+            }, 5000); 
+        }
+
+        if (testimonialsArray.length > 0) {
+            showTestimonial(0);
+            startTestiAutoPlay();
+
+            dotsArray.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    clearInterval(testiInterval); 
+                    showTestimonial(index);
+                    startTestiAutoPlay(); 
+                });
+            });
+        }
+
+        // --- AUTH0 SETUP & LOGIC ---
+        // Instructions: Create a free Auth0 account (auth0.com). Create a "Single Page Application".
+        // Replace 'YOUR_AUTH0_DOMAIN' and 'YOUR_AUTH0_CLIENT_ID' below.
+        
+        let auth0Client = null;
+        
+        const configureClient = async () => {
+            try {
+                auth0Client = await auth0.createAuth0Client({
+                    domain: "indiaxplore.us.auth0.com", 
+                    clientId: "7BSX3vv8HqxsQw993wwMeDaXPdchJ0X2",
+                    authorizationParams: {
+                        redirect_uri: window.location.origin
+                    }
+                });
+            } catch (err) {
+                console.warn("Auth0 not configured yet. Please insert your Domain and Client ID.", err);
+            }
+        };
+
+        const updateUI = async () => {
+            if (!auth0Client) return;
+
+            const isAuthenticated = await auth0Client.isAuthenticated();
+            const btnLogin = document.getElementById("btn-login");
+            const btnSignup = document.getElementById("btn-signup");
+            const userProfile = document.getElementById("user-profile");
+            
+            if (isAuthenticated) {
+                // Hide login/signup
+                btnLogin.classList.add("hidden");
+                btnSignup.classList.add("hidden");
+                // Show profile
+                userProfile.classList.remove("hidden");
+                userProfile.classList.add("flex");
+                
+                const user = await auth0Client.getUser();
+                document.getElementById("user-avatar").src = user.picture;
+                document.getElementById("user-name").innerText = user.name || user.email;
+            } else {
+                // Show login/signup
+                btnLogin.classList.remove("hidden");
+                btnSignup.classList.remove("hidden");
+                // Hide profile
+                userProfile.classList.add("hidden");
+                userProfile.classList.remove("flex");
+            }
+        };
+
+        // Initialize Auth0 on load
+        window.onload = async () => {
+            await configureClient();
+            
+            // Check if we just came back from the Auth0 login page
+            if (auth0Client && window.location.search.includes("code=") && window.location.search.includes("state=")) {
+                await auth0Client.handleRedirectCallback();
+                window.history.replaceState({}, document.title, "/"); // remove URL params
+            }
+            
+            await updateUI();
+            
+            // Wire up buttons
+            document.getElementById("btn-login").addEventListener("click", async () => {
+                if (auth0Client) await auth0Client.loginWithRedirect();
+                else alert("Auth0 is not configured yet. See instructions in the HTML file.");
+            });
+            
+            document.getElementById("btn-signup").addEventListener("click", async () => {
+                if (auth0Client) await auth0Client.loginWithRedirect({ authorizationParams: { screen_hint: "signup" } });
+                else alert("Auth0 is not configured yet. See instructions in the HTML file.");
+            });
+            
+            document.getElementById("btn-logout").addEventListener("click", () => {
+                if (auth0Client) auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
+            });
+        };
+
+        // Scroll and Navigation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                });
+            }, revealOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => revealOnScroll.observe(el));
+
+            const highlightOptions = { threshold: 0.3 };
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-orange-accent');
+                            link.classList.add('text-slate-300');
+                            if (link.getAttribute('data-target') === targetId) {
+                                link.classList.remove('text-slate-300');
+                                link.classList.add('text-orange-accent');
+                            }
+                        });
+                    }
+                });
+            }, highlightOptions);
+
+            sections.forEach(section => sectionObserver.observe(section));
+        });
+    </script>
+</body>
+</html>

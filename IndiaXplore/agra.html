@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Agra, Uttar Pradesh - IndiaXplore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Volkhov:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif-custom {
+            font-family: 'Volkhov', serif;
+        }
+
+        /* Animated Background Blobs */
+        .blob { position: fixed; filter: blur(80px); z-index: -1; opacity: 0.5; animation: float 20s infinite alternate; }
+        .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #4f46e5; animation-delay: 0s; }
+        .blob-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: #ec4899; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-orange-accent { color: #F1A501; }
+        .bg-orange-accent { background-color: #F1A501; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-bottom-color: #F1A501;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-accent selection:text-white">
+
+    <!-- Ambient Background -->
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 w-[95%] max-w-7xl mx-auto flex justify-between items-center transition-all duration-300">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="font-extrabold text-2xl tracking-tight text-white">India<span class="text-orange-accent">Xplore</span></span>
+        </a>
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+        </a>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <main class="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
+        <div class="flex flex-col lg:flex-row gap-10 items-start">
+            
+            <!-- Left Side: Sticky Image & Quick Info -->
+            <div class="w-full lg:w-5/12 lg:sticky lg:top-32 relative">
+                <div class="glass-panel rounded-[32px] p-3 overflow-hidden">
+                    <div class="relative rounded-2xl overflow-hidden aspect-[4/5]">
+                        <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1171&auto=format&fit=crop" alt="Agra, Uttar Pradesh" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent"></div>
+                        
+                        <div class="absolute bottom-8 left-8 right-8">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-semibold uppercase tracking-wider mb-3">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> Uttar Pradesh
+                            </div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 shadow-sm">Agra</h1>
+                            <p class="text-slate-200 text-sm font-medium opacity-90">The City of Taj</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Cards under image -->
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                        <i data-lucide="calendar-days" class="w-6 h-6 text-orange-accent mb-2"></i>
+                        <span class="text-xs text-slate-400 uppercase tracking-widest">Duration</span>
+                        <span class="font-bold text-lg">7 Days</span>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                        <i data-lucide="sun" class="w-6 h-6 text-yellow-400 mb-2"></i>
+                        <span class="text-xs text-slate-400 uppercase tracking-widest">Best Time</span>
+                        <span class="font-bold text-lg">Oct - Mar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: AI Planning & Itinerary -->
+            <div class="w-full lg:w-7/12 flex flex-col gap-6">
+                
+                <!-- Setup Card -->
+                <div class="glass-panel rounded-[32px] p-8 md:p-10 border-t border-white/20 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-orange-accent/10 rounded-full blur-3xl"></div>
+                    
+                    <h2 class="text-3xl font-bold mb-2">Plan Your Journey</h2>
+                    <p class="text-slate-400 text-sm mb-8">Enter your starting location and our AI will craft a personalized itinerary, highlight must-visit spots, and estimate your travel costs.</p>
+                    
+                    <div class="flex flex-col gap-4 mb-6">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-slate-500"></i>
+                            </div>
+                            <input type="text" id="start-location" placeholder="Where are you traveling from? (e.g. Mumbai, London)" 
+                                class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-orange-accent transition-colors placeholder-slate-500">
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="relative flex-1">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-slate-500"></i>
+                                </div>
+                                <input type="date" id="start-date" style="color-scheme: dark;"
+                                    class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-orange-accent transition-colors text-sm">
+                            </div>
+                            <div class="relative flex-1">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i data-lucide="calendar-check" class="w-5 h-5 text-slate-500"></i>
+                                </div>
+                                <input type="date" id="end-date" style="color-scheme: dark;"
+                                    class="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-orange-accent transition-colors text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div id="trip-summary" class="text-sm flex items-center gap-2">
+                            <!-- Populated by JS -->
+                        </div>
+                        <button onclick="generateItinerary()" id="generate-btn" class="w-full sm:w-auto bg-orange-accent hover:bg-orange-500 text-white font-bold py-4 px-8 rounded-xl shadow-[0_0_20px_rgba(241,165,1,0.3)] transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i> Generate Plan
+                        </button>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loading-state" class="hidden flex-col items-center justify-center py-10 mt-4">
+                        <span class="loader w-10 h-10 mb-4"></span>
+                        <p class="text-orange-accent font-medium animate-pulse">Crafting your perfect Agra experience...</p>
+                        <p class="text-xs text-slate-500 mt-2">Checking flights, hotels, and local dining...</p>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div id="error-state" class="hidden bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mt-6 text-sm flex items-start gap-3">
+                        <i data-lucide="alert-circle" class="w-5 h-5 shrink-0 mt-0.5"></i>
+                        <span id="error-message">Failed to generate itinerary. Please try again.</span>
+                    </div>
+                </div>
+
+                <!-- Results Container (Hidden by default) -->
+                <div id="results-container" class="hidden flex-col gap-6">
+                    
+                    <!-- Highlights Section -->
+                    <div class="glass-panel rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="camera" class="text-orange-accent"></i> Key Highlights</h3>
+                        <div id="highlights-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Itinerary Section -->
+                    <div class="glass-panel rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="map" class="text-orange-accent"></i> Your Itinerary</h3>
+                        
+                        <!-- Communication/Transport Tip -->
+                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-8 flex gap-4">
+                            <i data-lucide="info" class="w-6 h-6 text-blue-400 shrink-0"></i>
+                            <p id="comm-tips" class="text-sm text-slate-300 leading-relaxed"></p>
+                        </div>
+
+                        <div id="itinerary-timeline" class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown & Pay Button -->
+                    <div class="glass-panel rounded-3xl p-8 border border-green-500/30 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="receipt" class="text-green-400"></i> Cost Estimate</h3>
+                        
+                        <div class="bg-slate-900/60 rounded-2xl p-6 mb-8 border border-slate-700">
+                            <div class="space-y-4 text-sm font-medium">
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-700/50">
+                                    <span class="text-slate-400 flex items-center gap-2"><i data-lucide="plane" class="w-4 h-4"></i> Flights/Transport</span>
+                                    <span id="cost-transport" class="text-white">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-700/50">
+                                    <span class="text-slate-400 flex items-center gap-2"><i data-lucide="hotel" class="w-4 h-4"></i> <span id="hotel-days-label">Accommodations (7 Days)</span></span>
+                                    <span id="cost-hotel" class="text-white">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-700/50">
+                                    <span class="text-slate-400 flex items-center gap-2"><i data-lucide="utensils" class="w-4 h-4"></i> Dining & Local Activities</span>
+                                    <span id="cost-food" class="text-white">₹0</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-700/50">
+                                    <span class="text-slate-400 flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> IndiaXplore Platform Fee</span>
+                                    <span id="cost-fee" class="text-white">₹499</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 text-lg">
+                                    <span class="text-white font-bold">Total Estimated Cost</span>
+                                    <span id="cost-total" class="text-green-400 font-bold text-2xl">₹0</span>
+                                </div>
+                                <p class="text-xs text-slate-500 text-right mt-1">*Prices are estimated based on your origin.</p>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-green-500 hover:bg-green-400 text-slate-900 font-bold text-lg py-5 rounded-xl shadow-[0_0_25px_rgba(34,197,94,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer group">
+                            <i data-lucide="credit-card" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                            Pay <span id="btn-total">₹0</span> Now
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Gemini API Config
+        const apiKey = "AIzaSyByJVibgF4dxPD-R26oVAL-cAyG_ULw1LY"; // API key is injected by the environment
+
+        // --- Date & Summary Logic ---
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+        const locationInput = document.getElementById('start-location');
+        const summaryText = document.getElementById('trip-summary');
+
+        function calculateDays() {
+            const start = new Date(startDateInput.value);
+            const end = new Date(endDateInput.value);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays || 1; // At least 1 day
+        }
+
+        function updateSummary() {
+            const loc = locationInput.value.trim() || 'Origin';
+            const days = calculateDays();
+            summaryText.innerHTML = `
+                <span class="text-white font-bold text-sm md:text-base px-3 py-1.5 bg-white/10 rounded-lg shadow-inner">${loc}</span> 
+                <i data-lucide="arrow-right" class="w-4 h-4 text-orange-accent"></i> 
+                <span class="text-white font-bold text-sm md:text-base px-3 py-1.5 bg-white/10 rounded-lg shadow-inner">Agra</span> 
+                <span class="text-slate-400 ml-1 md:ml-2 font-medium text-xs md:text-sm whitespace-nowrap">${days} Days Trip</span>
+            `;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        // Initialize dates (Default to 7 Days for Agra)
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const sevenDaysLater = new Date(tomorrow);
+        sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
+
+        startDateInput.value = tomorrow.toISOString().split('T')[0];
+        endDateInput.value = sevenDaysLater.toISOString().split('T')[0];
+
+        // Event Listeners for Date/Location changes
+        startDateInput.addEventListener('change', () => {
+            let start = new Date(startDateInput.value);
+            
+            // Automatically set end date to exactly 7 days after the new start date
+            let newEnd = new Date(start);
+            newEnd.setDate(newEnd.getDate() + 7);
+            endDateInput.value = newEnd.toISOString().split('T')[0];
+            
+            updateSummary();
+        });
+        
+        endDateInput.addEventListener('change', () => {
+            let start = new Date(startDateInput.value);
+            let end = new Date(endDateInput.value);
+            
+            // Prevent negative days: If end date is set before start date, push start date back
+            if (end <= start) {
+                start = new Date(end);
+                start.setDate(start.getDate() - 7);
+                startDateInput.value = start.toISOString().split('T')[0];
+            }
+            updateSummary();
+        });
+        locationInput.addEventListener('input', updateSummary);
+
+        // Initial summary render
+        updateSummary();
+        // -----------------------------
+
+        async function generateItinerary() {
+            const startLocation = locationInput.value.trim();
+            const errorState = document.getElementById('error-state');
+            const errorMessage = document.getElementById('error-message');
+            const tripDays = calculateDays();
+            const startDateStr = startDateInput.value;
+            const endDateStr = endDateInput.value;
+            
+            if (!startLocation) {
+                errorState.classList.remove('hidden');
+                errorMessage.innerText = "Please enter your starting location first.";
+                return;
+            }
+
+            // UI State updates
+            errorState.classList.add('hidden');
+            document.getElementById('generate-btn').disabled = true;
+            document.getElementById('generate-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('loading-state').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+
+            const prompt = `
+                Act as an expert travel planner for India. 
+                The user is traveling from ${startLocation} to Agra, Uttar Pradesh from ${startDateStr} to ${endDateStr} (a ${tripDays}-day trip).
+                Generate a highly structured JSON response detailing this trip.
+                Ensure the total cost closely approaches 15,000 INR to 20,000 INR (approx 18k) based on realistic estimations from their origin. Keep the platform fee fixed at 499.
+
+                You MUST return ONLY a valid JSON object matching this exact structure, with no markdown formatting:
+                {
+                    "itinerary": [
+                        { "day": "Day 1: Arrival & Sunset Taj Mahal", "activities": "Brief description of places to visit", "dining": "Restaurant tips" }
+                    ],
+                    "highlights": [
+                        { "name": "Taj Mahal", "description": "Brief detail" }
+                    ],
+                    "communication_tips": "Brief tip on local transport, language, or connectivity in Agra.",
+                    "costs": {
+                        "transport": 3000,
+                        "hotel": 8000,
+                        "food": 5501
+                    }
+                }
+            `;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const data = await fetchWithRetry(payload);
+                renderResults(data);
+            } catch (error) {
+                console.error("API Fetch Error:", error);
+                errorState.classList.remove('hidden');
+                // Output the exact error message to the screen
+                errorMessage.innerText = "API Error: " + error.message;
+            } finally {
+                // Reset Button & Loader
+                document.getElementById('generate-btn').disabled = false;
+                document.getElementById('generate-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('loading-state').classList.add('hidden');
+            }
+        }
+
+        // The Ultimate Auto-Discovery Fetch Function
+        async function fetchWithRetry(payload) {
+            let modelsToTry = [];
+            
+            if (apiKey && apiKey !== "YOUR_API_KEY_HERE") {
+                try {
+                    // 1. Ask Google EXACTLY which models your specific key is allowed to use
+                    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                    if (listRes.ok) {
+                        const listData = await listRes.json();
+                        // 2. Filter only models that support text generation
+                        modelsToTry = listData.models
+                            .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"))
+                            .map(m => m.name.replace('models/', ''));
+                        
+                        // 3. Prioritize 'flash' models as they are fastest and have the highest free quotas
+                        modelsToTry.sort((a, b) => {
+                            if (a.includes('flash') && !b.includes('flash')) return -1;
+                            if (!a.includes('flash') && b.includes('flash')) return 1;
+                            return 0;
+                        });
+                    }
+                } catch (err) {
+                    console.warn("Could not fetch model list from Google, falling back to safe defaults.");
+                }
+                
+                // If the list fails or returns empty, use the most universally available fallbacks
+                if (modelsToTry.length === 0) {
+                    modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-pro"];
+                }
+            } else {
+                // Internal Canvas preview model
+                modelsToTry = ["gemini-2.5-flash-preview-09-2025"];
+            }
+
+            console.log("Attempting models in this exact order based on your API key's permissions:", modelsToTry);
+            let lastError = null;
+
+            for (const model of modelsToTry) {
+                // BUGFIX: Use stable API version 'v1' for older models to prevent 'not found in v1beta' errors
+                const apiVersion = model.includes('preview') || model.includes('experimental') || model.includes('2.0') ? 'v1beta' : 'v1';
+                const url = `https://generativelanguage.googleapis.com/${apiVersion}/models/${model}:generateContent?key=${apiKey}`;
+                
+                console.log(`Trying model: ${model} via ${apiVersion}...`);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        const errDetails = await response.json();
+                        const exactError = errDetails.error?.message || `HTTP ${response.status}`;
+                        console.warn(`Model ${model} rejected the request:`, exactError);
+                        throw new Error(`[${model}] ` + exactError);
+                    }
+                    
+                    const result = await response.json();
+                    let textContent = result.candidates[0].content.parts[0].text;
+                    
+                    // Bulletproof JSON Extraction
+                    textContent = textContent.replace(/```json/gi, '').replace(/```/g, '').trim();
+                    const firstBrace = textContent.indexOf('{');
+                    const lastBrace = textContent.lastIndexOf('}');
+                    
+                    if (firstBrace !== -1 && lastBrace !== -1) {
+                        textContent = textContent.substring(firstBrace, lastBrace + 1);
+                    }
+                    
+                    return JSON.parse(textContent);
+                } catch (e) {
+                    lastError = e;
+                    // Automatically loops to try the NEXT model in the list without stopping the code!
+                }
+            }
+            
+            throw lastError || new Error("All available Google AI models failed to respond.");
+        }
+
+        function renderResults(data) {
+            // Render Highlights
+            const highlightsHTML = data.highlights.map(h => {
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name + ', Agra')}`;
+                return `
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-white/5 hover:bg-white/5 transition-colors group">
+                        <h4 class="font-bold text-white mb-2 flex items-center justify-between">
+                            ${h.name}
+                            <a href="${mapLink}" target="_blank" class="text-slate-400 hover:text-orange-accent transition-colors">
+                                <i data-lucide="external-link" class="w-4 h-4"></i>
+                            </a>
+                        </h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">${h.description}</p>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('highlights-list').innerHTML = highlightsHTML;
+
+            // Render Tips
+            document.getElementById('comm-tips').innerText = data.communication_tips;
+
+            // Render Itinerary Timeline
+            const timelineHTML = data.itinerary.map((day, idx) => `
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#0f172a] bg-orange-accent text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-panel p-5 rounded-2xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-orange-accent text-sm">${day.day}</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-3"><span class="text-white font-medium">Visit:</span> ${day.activities}</p>
+                        <p class="text-xs text-slate-400 flex items-start gap-1">
+                            <i data-lucide="utensils" class="w-3 h-3 shrink-0 mt-0.5"></i> 
+                            <span>${day.dining}</span>
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('itinerary-timeline').innerHTML = timelineHTML;
+
+            // Update Dynamic Labels
+            document.getElementById('hotel-days-label').innerText = "Accommodations (" + calculateDays() + " Days)";
+
+            // Render Costs
+            const platformFee = 499;
+            const total = data.costs.transport + data.costs.hotel + data.costs.food + platformFee;
+            
+            const formatPrice = (num) => '₹' + num.toLocaleString('en-IN');
+            
+            document.getElementById('cost-transport').innerText = formatPrice(data.costs.transport);
+            document.getElementById('cost-hotel').innerText = formatPrice(data.costs.hotel);
+            document.getElementById('cost-food').innerText = formatPrice(data.costs.food);
+            document.getElementById('cost-total').innerText = formatPrice(total);
+            document.getElementById('btn-total').innerText = formatPrice(total);
+
+            // Re-initialize dynamic icons injected into DOM
+            lucide.createIcons();
+
+            // Show results
+            document.getElementById('results-container').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('flex');
+            
+            // Scroll to results smoothly
+            document.getElementById('results-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
